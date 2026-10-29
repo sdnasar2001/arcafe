@@ -30,13 +30,7 @@ export default function OpenStatus({ hours }: { hours: string }) {
   const isOpen = h.open < h.close ? now >= h.open && now < h.close : now >= h.open || now < h.close;
 
   return (
-    <p
-      className={
-        "inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-bold ring-1 " +
-        (isOpen ? "bg-[#E7F4EC] text-[#14532D] ring-[#A7D7B8]" : "bg-[#FBECEC] text-[#7F1D1D] ring-[#F0BFBF]")
-      }
-    >
-      <span className={"h-2.5 w-2.5 rounded-full " + (isOpen ? "bg-[#16A34A]" : "bg-[#DC2626]")} aria-hidden="true" />
+    <p role="status" className={"status " + (isOpen ? "status--open" : "status--closed")}>
       {isOpen ? `Open now, closes at ${h.closeLabel}` : `Closed now, opens at ${h.openLabel}`}
     </p>
   );
