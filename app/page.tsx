@@ -30,12 +30,12 @@ const display = Anek_Tamil({ subsets: ["latin", "tamil"], axes: ["wdth"] });
 const body = Mukta_Malar({ subsets: ["latin", "tamil"], weight: ["400", "600", "700"] });
 
 // Painted-signboard palette
-const DARK = { bg: "bg-[#12302F]", text: "text-white", muted: "text-white/70", rule: "border-white/30", price: "text-[#E0B866]" };
-const LIGHT = { bg: "bg-white ring-1 ring-[#DEDDD6]", text: "text-[#1F2422]", muted: "text-stone-600", rule: "border-stone-300", price: "text-[#8A6420]" };
+const DARK = { bg: "bg-[#FCF8EE] ring-1 ring-[#E8D9AE]", text: "text-[#2A2418]", muted: "text-stone-600", rule: "border-[#D9C48A]", price: "text-[#8A6A12]" };
+const LIGHT = { bg: "bg-white ring-1 ring-[#E8D9AE]", text: "text-[#2A2418]", muted: "text-stone-600", rule: "border-stone-300", price: "text-[#8A6A12]" };
 const BOARDS = [DARK, LIGHT, LIGHT, DARK];
 
 function Band() {
-  return <div className="h-1 bg-[#C8963E]" aria-hidden="true" />;
+  return <div className="h-1 bg-[#C9A227]" aria-hidden="true" />;
 }
 
 export const metadata: Metadata = {
@@ -93,12 +93,12 @@ function HeroLogo() {
           </linearGradient>
         ))}
       </defs>
-      <circle cx="200" cy="200" r="196" fill="#F5F5F2" />
-      <circle cx="200" cy="200" r="182" fill="none" stroke="#12302F" strokeWidth="3" strokeLinecap="round" strokeDasharray="0.5 11" />
+      <circle cx="200" cy="200" r="196" fill="#FFFFFF" />
+      <circle cx="200" cy="200" r="182" fill="none" stroke="#C9A227" strokeWidth="3" strokeLinecap="round" strokeDasharray="0.5 11" />
       {orbits.map((o, i) => (
         <g key={i} transform={`rotate(${o.rot} 200 200)`}>
           <ellipse cx="200" cy="200" rx="160" ry="54" fill="none" stroke={`url(#hero${i})`} strokeWidth="9" />
-          <circle r="11" fill="#FFFFFF" stroke="#12302F" strokeWidth="3" className="motion-reduce:hidden">
+          <circle r="11" fill="#FFFFFF" stroke="#2A2418" strokeWidth="3" className="motion-reduce:hidden">
             <animateMotion dur={o.dur} repeatCount="indefinite" path={o.path} />
           </circle>
         </g>
@@ -118,23 +118,23 @@ export default function Home() {
     encodeURIComponent(CAFE.name + " " + CAFE.address);
   const sections = site.menu.filter((s) => s.items.length > 0);
 
-  const dots = "bg-[radial-gradient(rgba(255,255,255,0.07)_1.5px,transparent_1.5px)] bg-[length:22px_22px]";
+  const dots = "bg-[radial-gradient(rgba(201,162,39,0.22)_1.5px,transparent_1.5px)] bg-[length:22px_22px]";
   const wide = display.className + " [font-stretch:125%]";
 
   return (
-    <main className={body.className + " min-h-screen bg-[#FAFAF8] text-[#1F2422] antialiased"}>
+    <main className={body.className + " min-h-screen bg-white text-[#2A2418] antialiased"}>
       {/* Navigation */}
       <header className="sticky top-0 z-20 bg-white/95 backdrop-blur">
         <Band />
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          <a href="#top" className={wide + " flex items-center gap-2.5 text-2xl font-extrabold text-[#12302F]"}>
+          <a href="#top" className={wide + " flex items-center gap-2.5 text-2xl font-extrabold text-[#2A2418]"}>
             <Logo size={40} id="hdr" />
             {CAFE.name}
           </a>
           <nav className="flex items-center gap-5 text-[15px] font-semibold sm:gap-8">
-            <a href="#menu" className="rounded hover:text-[#12302F] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#12302F]">Menu</a>
-            <a href="#about" className="hidden rounded hover:text-[#12302F] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#12302F] sm:inline">About</a>
-            <a href="#visit" className="rounded-full bg-[#12302F] px-4 py-2 text-white hover:bg-[#1D4743] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#12302F]">
+            <a href="#menu" className="rounded hover:text-[#2A2418] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2A2418]">Menu</a>
+            <a href="#about" className="hidden rounded hover:text-[#2A2418] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2A2418] sm:inline">About</a>
+            <a href="#visit" className="rounded-full bg-[#C9A227] px-4 py-2 text-[#2A2418] hover:bg-[#B08D1E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A2418]">
               Visit us
             </a>
           </nav>
@@ -143,35 +143,35 @@ export default function Home() {
 
       {/* Hero: the painted signboard */}
       <section id="top" className="px-3 pt-3 sm:px-4 sm:pt-4">
-        <div className={"mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[#12302F] text-white " + dots}>
+        <div className={"mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[#FCF8EE] text-[#2A2418] ring-1 ring-[#E8D9AE] " + dots}>
           <div className="grid items-center gap-10 px-6 py-12 sm:px-10 md:grid-cols-[1.15fr_1fr] md:py-20 lg:px-16">
             <div>
               <p className={wide + " text-6xl font-extrabold leading-[0.9] sm:text-7xl lg:text-8xl"}>{CAFE.name}</p>
-              <p className={display.className + " mt-3 text-3xl font-bold text-[#C8963E] sm:text-4xl"}>ஏ.ஆர். கஃபே</p>
+              <p className={display.className + " mt-3 text-3xl font-bold text-[#8A6A12] sm:text-4xl"}>ஏ.ஆர். கஃபே</p>
               <h1 className="mt-8 max-w-xl text-2xl font-semibold leading-snug sm:text-3xl">{CAFE.tagline}</h1>
-              <p className="mt-4 max-w-lg text-lg leading-relaxed text-white/80">{CAFE.intro}</p>
+              <p className="mt-4 max-w-lg text-lg leading-relaxed text-stone-700">{CAFE.intro}</p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href="#menu" className="rounded-full bg-[#C8963E] px-7 py-3.5 text-center font-bold text-[#1F2422] transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                <a href="#menu" className="rounded-full bg-[#C9A227] px-7 py-3.5 text-center font-bold text-[#2A2418] transition hover:bg-[#B08D1E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A2418]">
                   See our menu
                 </a>
-                <a href={mapsUrl} className="rounded-full border-2 border-white/70 px-7 py-3 text-center font-bold transition hover:bg-white hover:text-[#12302F] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                <a href={mapsUrl} className="rounded-full border-2 border-[#2A2418]/60 px-7 py-3 text-center font-bold transition hover:bg-[#2A2418] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A2418]">
                   Get directions
                 </a>
               </div>
-              {CAFE.hours && <p className="mt-6 font-semibold text-[#C8963E]">{CAFE.hours}</p>}
+              {CAFE.hours && <p className="mt-6 font-semibold text-[#8A6A12]">{CAFE.hours}</p>}
             </div>
             <div className="flex flex-col items-center gap-6">
               {site.heroImage ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={img(site.heroImage)} alt={CAFE.name} className="aspect-square w-full max-w-sm rounded-full object-cover ring-[10px] ring-[#C8963E]" />
+                <img src={img(site.heroImage)} alt={CAFE.name} className="aspect-square w-full max-w-sm rounded-full object-cover ring-[10px] ring-[#C9A227]" />
               ) : (
                 <HeroLogo />
               )}
-              <div className="hidden items-center gap-4 rounded-2xl bg-white p-3 pr-5 text-[#1F2422] sm:inline-flex">
+              <div className="hidden items-center gap-4 rounded-2xl bg-white p-3 pr-5 text-[#2A2418] sm:inline-flex">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img("menu-qr.svg")} alt="QR code to open the AR Cafe menu" width={96} height={96} className="h-24 w-24" />
                 <div>
-                  <p className={display.className + " text-lg font-bold text-[#12302F]"}>Menu on your phone</p>
+                  <p className={display.className + " text-lg font-bold text-[#2A2418]"}>Menu on your phone</p>
                   <p className="max-w-[12rem] text-sm text-stone-600">Scan with your camera to open our menu.</p>
                 </div>
               </div>
@@ -186,7 +186,7 @@ export default function Home() {
           <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 md:grid-cols-3">
             {site.highlights.map((h, i) => (
               <div key={i} className="flex gap-4">
-                <span aria-hidden="true" className={"mt-1.5 grid h-9 w-9 flex-none place-items-center rounded-full " + ["bg-[#12302F]", "bg-[#C8963E]", "bg-[#12302F]"][i % 3]}>
+                <span aria-hidden="true" className={"mt-1.5 grid h-9 w-9 flex-none place-items-center rounded-full " + ["bg-[#C9A227]", "bg-[#2A2418]", "bg-[#C9A227]"][i % 3]}>
                   <span className="h-2 w-2 rounded-full bg-white" />
                 </span>
                 <div>
@@ -202,10 +202,10 @@ export default function Home() {
       {/* Menu */}
       <section id="menu" className="scroll-mt-20 pb-20 md:pb-28">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-[#1F2422] pb-5">
+          <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-[#2A2418] pb-5">
             <div>
               <h2 className={wide + " text-5xl font-extrabold md:text-6xl"}>Our menu</h2>
-              <p className={display.className + " mt-1 text-2xl font-bold text-[#8A6420]"}>மெனு</p>
+              <p className={display.className + " mt-1 text-2xl font-bold text-[#8A6A12]"}>மெனு</p>
             </div>
             <p className="max-w-xs text-lg text-stone-600">Ask at the counter for today&apos;s specials.</p>
           </div>
@@ -252,22 +252,22 @@ export default function Home() {
 
       {/* Visit */}
       <section id="visit" className="scroll-mt-20 px-3 pb-3 sm:px-4 sm:pb-4">
-        <div className={"mx-auto max-w-7xl rounded-[2rem] bg-[#12302F] px-6 py-14 text-white sm:px-10 md:py-20 lg:px-16 " + dots}>
+        <div className={"mx-auto max-w-7xl rounded-[2rem] bg-[#FCF8EE] ring-1 ring-[#E8D9AE] px-6 py-14 text-[#2A2418] sm:px-10 md:py-20 lg:px-16 " + dots}>
           <div className="grid gap-10 md:grid-cols-2 md:items-end">
             <div>
-              <p className={display.className + " text-3xl font-bold text-[#E0B866]"}>வாங்க!</p>
+              <p className={display.className + " text-3xl font-bold text-[#8A6A12]"}>வாங்க!</p>
               <h2 className={wide + " mt-1 text-5xl font-extrabold md:text-6xl"}>Come say hello</h2>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <a href={mapsUrl} className="rounded-full bg-[#C8963E] px-7 py-3.5 text-center font-bold text-[#1F2422] transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                <a href={mapsUrl} className="rounded-full bg-[#C9A227] px-7 py-3.5 text-center font-bold text-[#2A2418] transition hover:bg-[#B08D1E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A2418]">
                   Get directions
                 </a>
                 {hasPhone && (
-                  <a href={"tel:+" + CAFE.phone} className="rounded-full border-2 border-white/70 px-7 py-3 text-center font-bold transition hover:bg-white hover:text-[#12302F] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                  <a href={"tel:+" + CAFE.phone} className="rounded-full border-2 border-[#2A2418]/60 px-7 py-3 text-center font-bold transition hover:bg-[#2A2418] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A2418]">
                     Call +{CAFE.phone}
                   </a>
                 )}
                 {hasPhone && (
-                  <a href={"https://wa.me/" + CAFE.phone} className="rounded-full border-2 border-white/70 px-7 py-3 text-center font-bold transition hover:bg-white hover:text-[#12302F] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+                  <a href={"https://wa.me/" + CAFE.phone} className="rounded-full border-2 border-[#2A2418]/60 px-7 py-3 text-center font-bold transition hover:bg-[#2A2418] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A2418]">
                     WhatsApp us
                   </a>
                 )}
@@ -275,11 +275,11 @@ export default function Home() {
             </div>
             <dl className="grid gap-6 text-xl sm:grid-cols-2">
               <div>
-                <dt className="font-semibold text-white/75">Find us</dt>
+                <dt className="font-semibold text-stone-600">Find us</dt>
                 <dd className="mt-1 font-bold">{CAFE.address}</dd>
               </div>
               <div>
-                <dt className="font-semibold text-white/75">Opening hours</dt>
+                <dt className="font-semibold text-stone-600">Opening hours</dt>
                 <dd className="mt-1 font-bold">{CAFE.hours}</dd>
               </div>
             </dl>
@@ -290,7 +290,7 @@ export default function Home() {
       {/* Footer */}
       <footer>
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-3 px-4 py-8 text-stone-600 sm:flex-row sm:items-center sm:px-6">
-          <p className={wide + " flex items-center gap-2 text-xl font-extrabold text-[#12302F]"}>
+          <p className={wide + " flex items-center gap-2 text-xl font-extrabold text-[#2A2418]"}>
             <Logo size={30} id="ftr" />
             {CAFE.name}
           </p>
