@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Cafe Admin</title>
+<style>
+  :root {
+    --bg: #faf6f0; --card: #ffffff; --ink: #2b1a10; --muted: #7c6a5c; --line: #e7ddd1;
+    --brand: #4a2c1a; --brand-2: #7a4a2b; --soft: #f1e2cf; --ok: #2f7a3f; --err: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { background: var(--brand); color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 10; }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  header h1 { font-size: 18px; margin: 0; }
+  header a { color: #f1d2a9; font-size: 14px; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  main { padding: 20px 16px 120px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 18px; }
+  .card h2 { font-size: 17px; margin: 0 0 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin: 10px 0 4px; }
+  input[type=text], input[type=password], textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; color: var(--ink); background: #fff; }
+  textarea { min-height: 70px; resize: vertical; }
+  input:focus, textarea:focus { outline: 2px solid var(--brand-2); outline-offset: 0; border-color: transparent; }
+  .grid2 { display: grid; gap: 0 14px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+  button, .btn { font: inherit; font-weight: 600; border-radius: 999px; padding: 9px 16px; border: 1.5px solid var(--brand); background: #fff; color: var(--brand); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  button.primary { background: var(--brand); color: #fff; }
+  button.small { padding: 5px 11px; font-size: 13px; }
+  button.icon { padding: 5px 9px; font-size: 13px; border-color: var(--line); color: var(--muted); }
+  button.danger { border-color: #e9c6c3; color: var(--err); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .help { background: var(--soft); border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-top: 12px; }
+  .help ol { margin: 6px 0 0; padding-left: 20px; }
+  .section { border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-top: 14px; background: #fffdfa; }
+  .section-head { display: grid; gap: 0 12px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .section-head { grid-template-columns: 1fr 1fr; } }
+  .item { display: grid; grid-template-columns: 72px 1fr; gap: 12px; border-top: 1px dashed var(--line); padding-top: 12px; margin-top: 12px; }
+  .thumb { width: 72px; height: 72px; border-radius: 12px; background: var(--soft) center/cover no-repeat; border: 1px solid var(--line); display: grid; place-items: center; color: var(--muted); font-size: 11px; text-align: center; }
+  .item-fields { display: grid; gap: 8px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .item-fields { grid-template-columns: 2fr 1fr; } }
+  .item-fields .full { grid-column: 1 / -1; }
+  .item-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; }
+  .check { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); margin-right: 6px; }
+  .hero-img { width: 100%; max-width: 360px; aspect-ratio: 4/3; border-radius: 16px; background: var(--soft) center/cover no-repeat; border: 1px solid var(--line); display: grid; place-items: center; color: var(--muted); }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--line); padding: 12px 16px; box-shadow: 0 -6px 20px rgba(0,0,0,.05); }
+  .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  #status { font-size: 14px; }
+  #status.ok { color: var(--ok); } #status.err { color: var(--err); }
+  .hidden { display: none !important; }
+  input[type=file] { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1 id="title">Cafe Admin</h1>
+    <a id="liveLink" href="../" target="_blank" rel="noopener">View live site</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Sign in -->
+  <section class="card" id="connectCard">
+    <h2>Sign in</h2>
+    <label for="token">GitHub access token</label>
+    <input type="password" id="token" autocomplete="off" placeholder="github_pat_...">
+    <div class="grid2">
+      <div><label for="owner">GitHub username</label><input type="text" id="owner"></div>
+      <div><label for="repo">Repository</label><input type="text" id="repo"></div>
+    </div>
+    <p class="row" style="margin-top:12px">
+      <label class="check"><input type="checkbox" id="remember" checked> Remember on this device</label>
+    </p>
+    <div class="row" style="margin-top:6px">
+      <button class="primary" id="connectBtn">Open editor</button>
+      <span class="muted" id="connectMsg"></span>
+    </div>
+    <div class="help">
+      <strong>First time? Create a token (one time):</strong>
+      <ol>
+        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub - new fine-grained token</a>.</li>
+        <li>Name: <em>Cafe admin</em>. Expiration: choose a date (for example 1 year).</li>
+        <li>Repository access: <strong>Only select repositories</strong> and pick your site repository.</li>
+        <li>Permissions: <strong>Contents</strong> = <strong>Read and write</strong>.</li>
+        <li>Click <strong>Generate token</strong>, copy it and paste it above.</li>
+      </ol>
+      <p class="muted" style="margin:8px 0 0">The token stays only in this browser. Never share it.</p>
+    </div>
+  </section>
+
+  <!-- Editor -->
+  <div id="editor" class="hidden">
+    <section class="card">
+      <h2>Cafe details</h2>
+      <div class="grid2">
+        <div><label>Cafe name</label><input type="text" data-bind="cafe.name"></div>
+        <div><label>Currency label (shown before prices)</label><input type="text" data-bind="cafe.currency" placeholder="Rs."></div>
+      </div>
+      <label>Main heading</label><input type="text" data-bind="cafe.tagline">
+      <label>Welcome text</label><textarea data-bind="cafe.intro"></textarea>
+      <div class="grid2">
+        <div><label>Phone / WhatsApp (country code, digits only)</label><input type="text" data-bind="cafe.phone" placeholder="91XXXXXXXXXX" inputmode="numeric"></div>
+        <div><label>Opening hours</label><input type="text" data-bind="cafe.hours"></div>
+      </div>
+      <label>Address</label><input type="text" data-bind="cafe.address">
+    </section>
+
+    <section class="card">
+      <h2>Front photo</h2>
+      <div class="hero-img" id="heroPreview">No photo - the coffee cup drawing is shown</div>
+      <div class="row" style="margin-top:12px">
+        <button class="small" data-act="pickHero">Upload photo</button>
+        <button class="small danger" data-act="removeHero">Remove photo</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Highlights <button class="small" data-act="addHighlight">+ Add</button></h2>
+      <div id="highlights"></div>
+    </section>
+
+    <section class="card">
+      <h2>Menu <button class="small" data-act="addSection">+ Add section</button></h2>
+      <p class="muted" style="margin:0">Leave price empty to hide it. Untick "Available" to show an item as not available today.</p>
+      <div id="menu"></div>
+    </section>
+
+    <section class="card">
+      <h2>Account</h2>
+      <button class="small" data-act="signOut">Sign out on this device</button>
+    </section>
+  </div>
+</main>
+
+<div class="bar hidden" id="bar">
+  <div class="wrap">
+    <span id="status">Loaded.</span>
+    <button class="primary" id="saveBtn" data-act="save">Save &amp; publish</button>
+  </div>
+</div>
+
+<input type="file" id="filePick" accept="image/*">
+
+<script>
+(function () {
+  "use strict";
+  var DATA_PATH = "content/site.json";
+  var UPLOAD_DIR = "public/uploads";
+  var STORE_KEY = "cafe-admin-v1";
+
+  var cfg = { token: "", owner: "", repo: "", branch: "main" };
+  var state = null;
+  var sha = null;
+  var dirty = false;
+  var busy = false;
+  var previews = {};
+  var pickTarget = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ---------- storage (best effort) ----------
+  function loadStore() {
+    try { var s = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); return s || {}; } catch (e) { return {}; }
+  }
+  function saveStore(obj) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); } catch (e) {}
+  }
+  function clearStore() {
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+  }
+
+  // ---------- helpers ----------
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function b64EncodeUtf8(str) {
+    var bytes = new TextEncoder().encode(str);
+    var bin = "";
+    for (var i = 0; i < bytes.length; i += 0x8000) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    }
+    return btoa(bin);
+  }
+  function b64DecodeUtf8(b64) {
+    var bin = atob(b64.replace(/\s/g, ""));
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  function setStatus(msg, kind) {
+    var el = $("status");
+    el.textContent = msg;
+    el.className = kind || "";
+  }
+  function markDirty() {
+    dirty = true;
+    setStatus("You have unsaved changes.", "");
+  }
+  function imgUrl(path) {
+    if (!path) return "";
+    if (previews[path]) return previews[path];
+    if (/^https?:\/\//.test(path)) return path;
+    return "https://raw.githubusercontent.com/" + cfg.owner + "/" + cfg.repo + "/" + cfg.branch + "/public/" + path.replace(/^\/+/, "");
+  }
+
+  // ---------- data shape ----------
+  function str(v) { return v == null ? "" : String(v); }
+  function normItem(i) {
+    i = i || {};
+    return { name: str(i.name), description: str(i.description), price: str(i.price), image: str(i.image), available: i.available !== false };
+  }
+  function normalize(s) {
+    s = s || {};
+    var c = s.cafe || {};
+    return {
+      cafe: {
+        name: str(c.name), tagline: str(c.tagline), intro: str(c.intro), phone: str(c.phone),
+        address: str(c.address), hours: str(c.hours), currency: c.currency == null ? "Rs." : str(c.currency)
+      },
+      heroImage: str(s.heroImage),
+      highlights: (s.highlights || []).map(function (h) { return { title: str(h && h.title), text: str(h && h.text) }; }),
+      menu: (s.menu || []).map(function (sec) {
+        sec = sec || {};
+        return { title: str(sec.title), note: str(sec.note), items: (sec.items || []).map(normItem) };
+      })
+    };
+  }
+  function getPath(obj, path) {
+    return path.split(".").reduce(function (o, k) { return o == null ? o : o[k]; }, obj);
+  }
+  function setPath(obj, path, val) {
+    var keys = path.split(".");
+    var last = keys.pop();
+    var target = keys.reduce(function (o, k) { return o[k]; }, obj);
+    target[last] = val;
+  }
+  function move(arr, i, d) {
+    var j = i + d;
+    if (j < 0 || j >= arr.length) return;
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+
+  // ---------- GitHub API ----------
+  function gh(path, opts) {
+    opts = opts || {};
+    var headers = {
+      "Authorization": "Bearer " + cfg.token,
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
+    };
+    if (opts.body) headers["Content-Type"] = "application/json";
+    return fetch("https://api.github.com/repos/" + encodeURIComponent(cfg.owner) + "/" + encodeURIComponent(cfg.repo) + (path ? "/" + path : ""), {
+      method: opts.method || "GET",
+      headers: headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      cache: "no-store"
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var data = null;
+        try { data = t ? JSON.parse(t) : null; } catch (e) {}
+        if (!r.ok) {
+          var err = new Error((data && data.message) || r.statusText || "Request failed");
+          err.status = r.status;
+          throw err;
+        }
+        return data;
+      });
+    });
+  }
+  function explain(e) {
+    if (e.status === 401) return "The token is not valid or has expired. Create a new one.";
+    if (e.status === 403) return "The token does not have permission. It needs Contents: Read and write for this repository.";
+    if (e.status === 404) return "Not found. Check the username, the repository name, and that the token has access to this repository.";
+    if (e.status === 409) return "Someone else changed the menu in the meantime. Reload this page and make your change again.";
+    if (e.status === 422) return "GitHub rejected the change (" + e.message + "). Reload the page and try again.";
+    if (e instanceof TypeError) return "Could not reach GitHub. Check your internet connection.";
+    return e.message || "Something went wrong.";
+  }
+
+  // ---------- render ----------
+  function render() {
+    document.querySelectorAll("[data-bind]").forEach(function (el) {
+      var v = getPath(state, el.getAttribute("data-bind"));
+      if (el.type === "checkbox") el.checked = !!v; else el.value = v == null ? "" : v;
+    });
+    $("title").textContent = (state.cafe.name || "Cafe") + " - Admin";
+
+    var hero = $("heroPreview");
+    if (state.heroImage) {
+      hero.style.backgroundImage = "url('" + imgUrl(state.heroImage).replace(/'/g, "%27") + "')";
+      hero.textContent = "";
+    } else {
+      hero.style.backgroundImage = "";
+      hero.textContent = "No photo - the coffee cup drawing is shown";
+    }
+
+    $("highlights").innerHTML = state.highlights.map(function (h, i) {
+      return '<div class="section">' +
+        '<div class="section-head">' +
+          '<div><label>Title</label><input type="text" data-bind="highlights.' + i + '.title" value="' + esc(h.title) + '"></div>' +
+          '<div><label>Text</label><input type="text" data-bind="highlights.' + i + '.text" value="' + esc(h.text) + '"></div>' +
+        '</div>' +
+        '<div class="item-actions" style="margin-top:8px">' +
+          '<button class="icon" data-act="hlUp" data-i="' + i + '" title="Move up">&#8593;</button>' +
+          '<button class="icon" data-act="hlDown" data-i="' + i + '" title="Move down">&#8595;</button>' +
+          '<button class="icon danger" data-act="hlDel" data-i="' + i + '">Delete</button>' +
+        '</div></div>';
+    }).join("") || '<p class="muted">No highlights.</p>';
+
+    $("menu").innerHTML = state.menu.map(function (sec, s) {
+      var items = sec.items.map(function (it, i) {
+        var p = "menu." + s + ".items." + i;
+        var url = imgUrl(it.image);
+        return '<div class="item">' +
+          '<div>' +
+            '<div class="thumb" style="' + (url ? "background-image:url('" + esc(url.replace(/'/g, "%27")) + "')" : "") + '">' + (url ? "" : "No photo") + '</div>' +
+            '<div class="item-actions">' +
+              '<button class="icon" data-act="pickItem" data-s="' + s + '" data-i="' + i + '">Photo</button>' +
+              (it.image ? '<button class="icon danger" data-act="removeItemImg" data-s="' + s + '" data-i="' + i + '" title="Remove photo">&#215;</button>' : "") +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<div class="item-fields">' +
+              '<div><label>Item name</label><input type="text" data-bind="' + p + '.name" value="' + esc(it.name) + '"></div>' +
+              '<div><label>Price (' + esc(state.cafe.currency || "") + ')</label><input type="text" data-bind="' + p + '.price" value="' + esc(it.price) + '" placeholder="e.g. 20" inputmode="decimal"></div>' +
+              '<div class="full"><label>Description</label><input type="text" data-bind="' + p + '.description" value="' + esc(it.description) + '"></div>' +
+            '</div>' +
+            '<div class="item-actions" style="margin-top:8px">' +
+              '<label class="check"><input type="checkbox" data-bind="' + p + '.available"' + (it.available ? " checked" : "") + '> Available</label>' +
+              '<button class="icon" data-act="itemUp" data-s="' + s + '" data-i="' + i + '" title="Move up">&#8593;</button>' +
+              '<button class="icon" data-act="itemDown" data-s="' + s + '" data-i="' + i + '" title="Move down">&#8595;</button>' +
+              '<button class="icon danger" data-act="itemDel" data-s="' + s + '" data-i="' + i + '">Delete</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+      return '<div class="section">' +
+        '<div class="section-head">' +
+          '<div><label>Section name</label><input type="text" data-bind="menu.' + s + '.title" value="' + esc(sec.title) + '"></div>' +
+          '<div><label>Small note</label><input type="text" data-bind="menu.' + s + '.note" value="' + esc(sec.note) + '"></div>' +
+        '</div>' +
+        '<div class="item-actions" style="margin-top:8px">' +
+          '<button class="icon" data-act="secUp" data-s="' + s + '" title="Move section up">&#8593; Section</button>' +
+          '<button class="icon" data-act="secDown" data-s="' + s + '" title="Move section down">&#8595; Section</button>' +
+          '<button class="icon danger" data-act="secDel" data-s="' + s + '">Delete section</button>' +
+        '</div>' +
+        items +
+        '<div style="margin-top:12px"><button class="small" data-act="addItem" data-s="' + s + '">+ Add item</button></div>' +
+      '</div>';
+    }).join("") || '<p class="muted">No menu sections yet.</p>';
+  }
+
+  // ---------- image upload ----------
+  function resizeImage(file, maxSide) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var im = new Image();
+      im.onload = function () {
+        var scale = Math.min(1, maxSide / Math.max(im.width, im.height));
+        var w = Math.round(im.width * scale), h = Math.round(im.height * scale);
+        var c = document.createElement("canvas");
+        c.width = w; c.height = h;
+        var ctx = c.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(im, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        resolve(c.toDataURL("image/jpeg", 0.82));
+      };
+      im.onerror = function () { URL.revokeObjectURL(url); reject(new Error("This file is not a supported image.")); };
+      im.src = url;
+    });
+  }
+  function slug(name) {
+    return (name.replace(/\.[^.]+$/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "photo").slice(0, 40);
+  }
+  function uploadImage(file) {
+    return resizeImage(file, 1400).then(function (dataUrl) {
+      var name = Date.now() + "-" + slug(file.name) + ".jpg";
+      var rel = "uploads/" + name;
+      return gh("contents/" + UPLOAD_DIR + "/" + name, {
+        method: "PUT",
+        body: { message: "Upload photo " + name, content: dataUrl.split(",")[1], branch: cfg.branch }
+      }).then(function () {
+        previews[rel] = dataUrl;
+        return rel;
+      });
+    });
+  }
+
+  // ---------- actions ----------
+  var actions = {
+    pickHero: function () { pickTarget = { kind: "hero" }; $("filePick").click(); },
+    removeHero: function () { state.heroImage = ""; markDirty(); render(); },
+    pickItem: function (d) { pickTarget = { kind: "item", s: +d.s, i: +d.i }; $("filePick").click(); },
+    removeItemImg: function (d) { state.menu[+d.s].items[+d.i].image = ""; markDirty(); render(); },
+    addHighlight: function () { state.highlights.push({ title: "New highlight", text: "" }); markDirty(); render(); },
+    hlUp: function (d) { move(state.highlights, +d.i, -1); markDirty(); render(); },
+    hlDown: function (d) { move(state.highlights, +d.i, 1); markDirty(); render(); },
+    hlDel: function (d) { if (confirm("Delete this highlight?")) { state.highlights.splice(+d.i, 1); markDirty(); render(); } },
+    addSection: function () { state.menu.push({ title: "New section", note: "", items: [] }); markDirty(); render(); },
+    secUp: function (d) { move(state.menu, +d.s, -1); markDirty(); render(); },
+    secDown: function (d) { move(state.menu, +d.s, 1); markDirty(); render(); },
+    secDel: function (d) {
+      var sec = state.menu[+d.s];
+      if (confirm('Delete the section "' + sec.title + '" and all ' + sec.items.length + " items in it?")) { state.menu.splice(+d.s, 1); markDirty(); render(); }
+    },
+    addItem: function (d) { state.menu[+d.s].items.push(normItem({ name: "New item" })); markDirty(); render(); },
+    itemUp: function (d) { move(state.menu[+d.s].items, +d.i, -1); markDirty(); render(); },
+    itemDown: function (d) { move(state.menu[+d.s].items, +d.i, 1); markDirty(); render(); },
+    itemDel: function (d) {
+      var it = state.menu[+d.s].items[+d.i];
+      if (confirm('Delete "' + it.name + '"?')) { state.menu[+d.s].items.splice(+d.i, 1); markDirty(); render(); }
+    },
+    save: save,
+    signOut: function () {
+      if (dirty && !confirm("You have unsaved changes. Sign out anyway?")) return;
+      clearStore(); dirty = false; location.reload();
+    }
+  };
+
+  function save() {
+    if (busy) return;
+    busy = true;
+    $("saveBtn").disabled = true;
+    setStatus("Saving...", "");
+    var json = JSON.stringify(state, null, 2) + "\n";
+    gh("contents/" + DATA_PATH, {
+      method: "PUT",
+      body: { message: "Update cafe content from admin page", content: b64EncodeUtf8(json), sha: sha, branch: cfg.branch }
+    }).then(function (res) {
+      sha = res.content.sha;
+      dirty = false;
+      setStatus("Saved! The live site updates in about 2 minutes.", "ok");
+    }).catch(function (e) {
+      setStatus("Not saved: " + explain(e), "err");
+    }).then(function () {
+      busy = false;
+      $("saveBtn").disabled = false;
+    });
+  }
+
+  // ---------- connect ----------
+  function connect() {
+    cfg.token = $("token").value.trim();
+    cfg.owner = $("owner").value.trim();
+    cfg.repo = $("repo").value.trim();
+    if (!cfg.token || !cfg.owner || !cfg.repo) { $("connectMsg").textContent = "Fill in all three fields."; return; }
+    $("connectBtn").disabled = true;
+    $("connectMsg").textContent = "Connecting...";
+    gh("").then(function (repoInfo) {
+      cfg.branch = repoInfo.default_branch || "main";
+      return gh("contents/" + DATA_PATH + "?ref=" + encodeURIComponent(cfg.branch));
+    }).then(function (file) {
+      sha = file.sha;
+      state = normalize(JSON.parse(b64DecodeUtf8(file.content)));
+      if ($("remember").checked) saveStore({ token: cfg.token, owner: cfg.owner, repo: cfg.repo });
+      else clearStore();
+      $("connectCard").classList.add("hidden");
+      $("editor").classList.remove("hidden");
+      $("bar").classList.remove("hidden");
+      render();
+      setStatus("Loaded. Make your changes, then press Save & publish.", "");
+    }).catch(function (e) {
+      $("connectMsg").textContent = explain(e);
+      $("connectBtn").disabled = false;
+    });
+  }
+
+  // ---------- events ----------
+  document.addEventListener("input", function (e) {
+    var el = e.target;
+    var path = el.getAttribute && el.getAttribute("data-bind");
+    if (!path || !state) return;
+    setPath(state, path, el.type === "checkbox" ? el.checked : el.value);
+    if (path === "cafe.name") $("title").textContent = (el.value || "Cafe") + " - Admin";
+    markDirty();
+  });
+  document.addEventListener("change", function (e) {
+    var el = e.target;
+    if (el.type === "checkbox" && el.getAttribute("data-bind") && state) {
+      setPath(state, el.getAttribute("data-bind"), el.checked);
+      markDirty();
+    }
+    if (el.getAttribute && el.getAttribute("data-bind") === "cafe.currency") render();
+  });
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest && e.target.closest("[data-act]");
+    if (!btn || !state) return;
+    e.preventDefault();
+    var fn = actions[btn.getAttribute("data-act")];
+    if (fn) fn(btn.dataset);
+  });
+  $("filePick").addEventListener("change", function () {
+    var file = this.files && this.files[0];
+    this.value = "";
+    if (!file || !pickTarget) return;
+    var target = pickTarget;
+    pickTarget = null;
+    setStatus("Uploading photo...", "");
+    uploadImage(file).then(function (rel) {
+      if (target.kind === "hero") state.heroImage = rel;
+      else state.menu[target.s].items[target.i].image = rel;
+      render();
+      markDirty();
+      setStatus("Photo uploaded. Press Save & publish to show it on the site.", "");
+    }).catch(function (e) {
+      setStatus("Photo not uploaded: " + explain(e), "err");
+    });
+  });
+  $("connectBtn").addEventListener("click", connect);
+  $("token").addEventListener("keydown", function (e) { if (e.key === "Enter") connect(); });
+  window.addEventListener("beforeunload", function (e) {
+    if (dirty) { e.preventDefault(); e.returnValue = ""; }
+  });
+
+  // ---------- start ----------
+  (function init() {
+    var host = location.hostname;
+    var parts = location.pathname.split("/").filter(Boolean);
+    var owner = "sdnasar2001", repo = "mysite";
+    if (/\.github\.io$/i.test(host)) {
+      owner = host.split(".")[0];
+      repo = parts.length > 1 ? parts[0] : host;
+    }
+    var stored = loadStore();
+    $("owner").value = stored.owner || owner;
+    $("repo").value = stored.repo || repo;
+    if (/\.github\.io$/i.test(host) && parts.length > 1) $("liveLink").href = "/" + parts[0] + "/";
+    else $("liveLink").href = "/";
+    if (stored.token) {
+      $("token").value = stored.token;
+      connect();
+    }
+  })();
+})();
+</script>
+</body>
+</html>

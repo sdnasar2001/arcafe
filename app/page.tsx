@@ -1,68 +1,37 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
-import { CAFE } from "./cafe-info";
+import rawSite from "../content/site.json";
+
+// All content comes from content/site.json - edit it from the admin page (/admin/).
+
+type Item = { name: string; description: string; price: string; image: string; available: boolean };
+type Section = { title: string; note: string; items: Item[] };
+type Site = {
+  cafe: {
+    name: string;
+    tagline: string;
+    intro: string;
+    phone: string;
+    address: string;
+    hours: string;
+    currency: string;
+  };
+  heroImage: string;
+  highlights: { title: string; text: string }[];
+  menu: Section[];
+};
+
+const site = rawSite as unknown as Site;
+const CAFE = site.cafe;
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const img = (p: string) => (/^https?:\/\//.test(p) ? p : BASE + "/" + p.replace(/^\/+/, ""));
 
 const serif = Playfair_Display({ subsets: ["latin"], weight: ["600", "700"] });
 
 export const metadata: Metadata = {
-  title: CAFE.name + " | Tea, Coffee, Tiffin and Bakery in Parangipettai",
-  description:
-    CAFE.name +
-    " in Parangipettai - fresh tea and coffee, special teas, idli, dosa, vada, samosa, rice, pasta and bakery items.",
+  title: CAFE.name + " | " + CAFE.address,
+  description: CAFE.name + " - " + CAFE.intro,
 };
-
-const menu = [
-  {
-    title: "Tea and Coffee",
-    note: "Brewed fresh, all day",
-    items: [
-      ["Tea", "Strong, milky and just right"],
-      ["Coffee", "Hot and freshly made"],
-      ["Special teas", "Different tea varieties - ask what is brewing today"],
-    ],
-  },
-  {
-    title: "Tiffin",
-    note: "South Indian favourites",
-    items: [
-      ["Idli", "Soft and fluffy, served hot"],
-      ["Dosa", "Crisp and golden"],
-      ["Vada", "Crunchy outside, soft inside"],
-      ["Samosa", "Spiced and freshly fried"],
-    ],
-  },
-  {
-    title: "Meals",
-    note: "Home-style cooking",
-    items: [
-      ["Rice", "Home-style rice dishes"],
-      ["Pasta", "A quick and filling favourite"],
-    ],
-  },
-  {
-    title: "Bakery",
-    note: "From our counter",
-    items: [
-      ["Bakery items", "Fresh bakes to enjoy with your tea"],
-      ["Take-away", "Pack some for home or the road"],
-    ],
-  },
-];
-
-const highlights = [
-  {
-    title: "Made fresh",
-    text: "Tiffin and rice dishes are cooked in our own kitchen.",
-  },
-  {
-    title: "Home-style taste",
-    text: "Simple, honest food that tastes like it was made at home.",
-  },
-  {
-    title: "Your neighbourhood stop",
-    text: "A friendly little cafe for a quick tea or a full breakfast.",
-  },
-];
 
 function Cup() {
   return (
@@ -87,6 +56,7 @@ export default function Home() {
   const mapsUrl =
     "https://www.google.com/maps/search/?api=1&query=" +
     encodeURIComponent(CAFE.name + " " + CAFE.address);
+  const sections = site.menu.filter((s) => s.items.length > 0);
 
   return (
     <main className="min-h-screen bg-[#faf6f0] font-sans text-stone-700 antialiased">
@@ -113,12 +83,9 @@ export default function Home() {
             Vanakkam! Welcome to {CAFE.name}
           </p>
           <h1 className={serif.className + " mt-6 text-5xl font-bold leading-tight text-[#2b1a10] md:text-6xl"}>
-            Fresh tea, hot tiffin and warm bakes
+            {CAFE.tagline}
           </h1>
-          <p className="mt-6 max-w-lg text-lg leading-relaxed text-stone-600">
-            Your friendly neighbourhood cafe in {CAFE.address}. Stop by for a cup of tea, a plate of
-            idli or dosa, or something fresh from the bakery counter.
-          </p>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-stone-600">{CAFE.intro}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <a
               href="#menu"
@@ -133,24 +100,35 @@ export default function Home() {
               Get directions
             </a>
           </div>
-          <p className="mt-6 text-sm text-stone-500">{CAFE.hours}</p>
+          {CAFE.hours && <p className="mt-6 text-sm text-stone-500">{CAFE.hours}</p>}
         </div>
         <div className="flex justify-center">
-          <Cup />
+          {site.heroImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={img(site.heroImage)}
+              alt={CAFE.name}
+              className="aspect-[4/3] w-full max-w-md rounded-[2rem] object-cover shadow-xl ring-8 ring-[#f1e2cf]"
+            />
+          ) : (
+            <Cup />
+          )}
         </div>
       </section>
 
       {/* Highlights */}
-      <section id="about" className="bg-[#2b1a10] py-16 text-white">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 md:grid-cols-3">
-          {highlights.map((h) => (
-            <div key={h.title}>
-              <h3 className={serif.className + " text-2xl font-semibold text-[#f1d2a9]"}>{h.title}</h3>
-              <p className="mt-2 leading-relaxed text-stone-300">{h.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {site.highlights.length > 0 && (
+        <section id="about" className="bg-[#2b1a10] py-16 text-white">
+          <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 md:grid-cols-3">
+            {site.highlights.map((h, i) => (
+              <div key={i}>
+                <h3 className={serif.className + " text-2xl font-semibold text-[#f1d2a9]"}>{h.title}</h3>
+                <p className="mt-2 leading-relaxed text-stone-300">{h.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Menu */}
       <section id="menu" className="py-20 md:py-28">
@@ -158,22 +136,46 @@ export default function Home() {
           <div className="text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-[#a0663c]">What we serve</p>
             <h2 className={serif.className + " mt-2 text-4xl font-bold text-[#2b1a10] md:text-5xl"}>Our menu</h2>
-            <p className="mx-auto mt-4 max-w-xl text-stone-600">
-              Ask at the counter for prices and today&apos;s specials.
-            </p>
+            <p className="mx-auto mt-4 max-w-xl text-stone-600">Ask at the counter for today&apos;s specials.</p>
           </div>
           <div className="mt-14 grid gap-6 md:grid-cols-2">
-            {menu.map((section) => (
-              <div key={section.title} className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-stone-200">
+            {sections.map((section, si) => (
+              <div key={si} className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-stone-200">
                 <div className="flex items-baseline justify-between gap-4 border-b border-dashed border-stone-300 pb-4">
                   <h3 className={serif.className + " text-2xl font-bold text-[#4a2c1a]"}>{section.title}</h3>
-                  <span className="text-sm text-[#a0663c]">{section.note}</span>
+                  {section.note && <span className="text-right text-sm text-[#a0663c]">{section.note}</span>}
                 </div>
-                <ul className="mt-5 space-y-4">
-                  {section.items.map(([name, desc]) => (
-                    <li key={name}>
-                      <p className="font-semibold text-stone-800">{name}</p>
-                      <p className="text-sm text-stone-500">{desc}</p>
+                <ul className="mt-5 space-y-5">
+                  {section.items.map((item, ii) => (
+                    <li key={ii} className={"flex gap-4" + (item.available ? "" : " opacity-50")}>
+                      {item.image && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={img(item.image)}
+                          alt={item.name}
+                          loading="lazy"
+                          className="h-16 w-16 flex-none rounded-2xl object-cover"
+                        />
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-baseline gap-3">
+                          <p className="font-semibold text-stone-800">{item.name}</p>
+                          {item.price && (
+                            <>
+                              <span className="mb-1 flex-1 border-b border-dotted border-stone-300" />
+                              <p className="whitespace-nowrap font-semibold text-[#7a4a2b]">
+                                {CAFE.currency} {item.price}
+                              </p>
+                            </>
+                          )}
+                        </div>
+                        {item.description && <p className="text-sm text-stone-500">{item.description}</p>}
+                        {!item.available && (
+                          <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-red-700">
+                            Not available today
+                          </p>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>

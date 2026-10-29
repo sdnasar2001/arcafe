@@ -1,0 +1,129 @@
+{
+  "cafe": {
+    "name": "AR Cafe",
+    "tagline": "Fresh tea, hot tiffin and warm bakes",
+    "intro": "Your friendly neighbourhood cafe in Revu Main Road, Parangi Pettai. Stop by for a cup of tea, a plate of idli or dosa, or something fresh from the bakery counter.",
+    "phone": "917539942906",
+    "address": "Revu Main Road, Parangi Pettai",
+    "hours": "5 AM - 11 PM Open Daily",
+    "currency": "Rs."
+  },
+  "heroImage": "",
+  "highlights": [
+    {
+      "title": "Made fresh",
+      "text": "Tiffin and rice dishes are cooked in our own kitchen."
+    },
+    {
+      "title": "Home-style taste",
+      "text": "Simple, honest food that tastes like it was made at home."
+    },
+    {
+      "title": "Your neighbourhood stop",
+      "text": "A friendly little cafe for a quick tea or a full breakfast."
+    }
+  ],
+  "menu": [
+    {
+      "title": "Tea and Coffee",
+      "note": "Brewed fresh, all day",
+      "items": [
+        {
+          "name": "Tea",
+          "description": "Strong, milky and just right",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Coffee",
+          "description": "Hot and freshly made",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Special teas",
+          "description": "Different tea varieties - ask what is brewing today",
+          "price": "",
+          "image": "",
+          "available": true
+        }
+      ]
+    },
+    {
+      "title": "Tiffin",
+      "note": "South Indian favourites",
+      "items": [
+        {
+          "name": "Idli",
+          "description": "Soft and fluffy, served hot",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Dosa",
+          "description": "Crisp and golden",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Vada",
+          "description": "Crunchy outside, soft inside",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Samosa",
+          "description": "Spiced and freshly fried",
+          "price": "",
+          "image": "",
+          "available": true
+        }
+      ]
+    },
+    {
+      "title": "Meals",
+      "note": "Home-style cooking",
+      "items": [
+        {
+          "name": "Rice",
+          "description": "Home-style rice dishes",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Pasta",
+          "description": "A quick and filling favourite",
+          "price": "",
+          "image": "",
+          "available": true
+        }
+      ]
+    },
+    {
+      "title": "Bakery",
+      "note": "From our counter",
+      "items": [
+        {
+          "name": "Bakery items",
+          "description": "Fresh bakes to enjoy with your tea",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Take-away",
+          "description": "Pack some for home or the road",
+          "price": "",
+          "image": "",
+          "available": true
+        }
+      ]
+    }
+  ]
+}
