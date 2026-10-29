@@ -33,21 +33,78 @@ export const metadata: Metadata = {
   description: CAFE.name + " - " + CAFE.intro,
 };
 
-function Cup() {
+// AR Cafe logo: a coffee bean "nucleus" with three multicolour orbits.
+function Logo({ size = 40, id = "lg", dark = false }: { size?: number; id?: string; dark?: boolean }) {
+  const bean = dark ? ["#f1d2a9", "#c49a6c"] : ["#7a4a2b", "#2b1a10"];
+  const bg = dark ? "#2b1a10" : "#faf6f0";
+  const orbits = dark
+    ? [["#EA580C", "#FBBF24"], ["#14B8A6", "#5EEAD4"], ["#DB2777", "#F9A8D4"]]
+    : [["#C2410C", "#F59E0B"], ["#0F766E", "#2DD4BF"], ["#9D174D", "#EC4899"]];
   return (
-    <svg viewBox="0 0 320 320" aria-hidden="true" className="h-auto w-full max-w-sm">
-      <circle cx="160" cy="170" r="150" fill="#f1e2cf" />
-      <g fill="none" stroke="#c49a6c" strokeWidth="6" strokeLinecap="round" className="animate-pulse">
-        <path d="M125 105c-14-18 14-28 0-48" />
-        <path d="M160 100c-14-20 14-30 0-55" />
-        <path d="M195 105c-14-18 14-28 0-48" />
+    <svg width={size} height={size} viewBox="0 0 400 400" aria-hidden="true">
+      <defs>
+        {orbits.map((c, i) => (
+          <linearGradient key={i} id={id + "o" + i} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor={c[0]} />
+            <stop offset="1" stopColor={c[1]} />
+          </linearGradient>
+        ))}
+        <linearGradient id={id + "b"} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor={bean[0]} />
+          <stop offset="1" stopColor={bean[1]} />
+        </linearGradient>
+      </defs>
+      {[0, 60, 120].map((r, i) => (
+        <ellipse key={r} cx="200" cy="200" rx="170" ry="58" fill="none" stroke={`url(#${id}o${i})`} strokeWidth="16" transform={`rotate(${r} 200 200)`} />
+      ))}
+      <g transform="rotate(-28 200 200)">
+        <ellipse cx="200" cy="200" rx="50" ry="68" fill={`url(#${id}b)`} />
+        <path d="M200 138 C180 172 220 228 200 262" fill="none" stroke={bg} strokeWidth="10" strokeLinecap="round" />
       </g>
-      <ellipse cx="160" cy="252" rx="118" ry="20" fill="#e3cdb2" />
-      <path d="M244 150c42 0 42 58 0 60" fill="none" stroke="#7a4a2b" strokeWidth="13" />
-      <path d="M78 130h164v44a82 82 0 0 1-164 0Z" fill="#ffffff" stroke="#7a4a2b" strokeWidth="5" />
-      <ellipse cx="160" cy="130" rx="82" ry="14" fill="#6b3f22" />
-      <path d="M100 175h120" stroke="#e8d3bb" strokeWidth="6" strokeLinecap="round" />
+      <circle cx="370" cy="200" r="22" fill={orbits[0][1]} stroke={bg} strokeWidth="6" />
     </svg>
+  );
+}
+
+// Large animated version for the hero (shown when no hero photo is set).
+function HeroLogo() {
+  const orbits = [
+    { from: "#C2410C", to: "#F59E0B", rot: 0, dur: "3.4s", path: "M360 200 A160 54 0 1 1 40 200 A160 54 0 1 1 360 200" },
+    { from: "#0F766E", to: "#2DD4BF", rot: 60, dur: "4.3s", path: "M40 200 A160 54 0 1 1 360 200 A160 54 0 1 1 40 200" },
+    { from: "#9D174D", to: "#EC4899", rot: 120, dur: "5.2s", path: "M200 146 A160 54 0 1 1 200 254 A160 54 0 1 1 200 146" },
+  ];
+  return (
+    <div className="flex w-full max-w-sm flex-col items-center gap-4">
+      <svg viewBox="0 0 400 400" role="img" aria-label="AR Cafe logo" className="h-auto w-full">
+        <defs>
+          {orbits.map((o, i) => (
+            <linearGradient key={i} id={"hero" + i} x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stopColor={o.from} />
+              <stop offset="1" stopColor={o.to} />
+            </linearGradient>
+          ))}
+          <linearGradient id="heroBean" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#7a4a2b" />
+            <stop offset="1" stopColor="#2b1a10" />
+          </linearGradient>
+        </defs>
+        <circle cx="200" cy="200" r="196" fill="#f1e2cf" />
+        <circle cx="200" cy="200" r="182" fill="none" stroke="#c49a6c" strokeWidth="2" strokeLinecap="round" strokeDasharray="0.5 9" />
+        {orbits.map((o, i) => (
+          <g key={i} transform={`rotate(${o.rot} 200 200)`}>
+            <ellipse cx="200" cy="200" rx="160" ry="54" fill="none" stroke={`url(#hero${i})`} strokeWidth="7" />
+            <circle r="10" fill={o.to} stroke="#faf6f0" strokeWidth="3">
+              <animateMotion dur={o.dur} repeatCount="indefinite" path={o.path} />
+            </circle>
+          </g>
+        ))}
+        <g transform="rotate(-28 200 200)">
+          <ellipse cx="200" cy="200" rx="38" ry="52" fill="url(#heroBean)" />
+          <path d="M200 152 C185 178 215 222 200 248" fill="none" stroke="#faf6f0" strokeWidth="6" strokeLinecap="round" />
+        </g>
+      </svg>
+      <p className="font-mono text-sm text-[#7a4a2b]">|AR&#10217; = |tea&#10217; + |coffee&#10217; + |bakery&#10217;</p>
+    </div>
   );
 }
 
@@ -63,7 +120,8 @@ export default function Home() {
       {/* Navigation */}
       <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-[#faf6f0]/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <a href="#top" className={serif.className + " text-2xl font-bold text-[#4a2c1a]"}>
+          <a href="#top" className={serif.className + " flex items-center gap-2.5 text-2xl font-bold text-[#4a2c1a]"}>
+            <Logo size={40} id="hdr" />
             {CAFE.name}
           </a>
           <nav className="flex items-center gap-5 text-sm font-medium sm:gap-8">
@@ -111,7 +169,7 @@ export default function Home() {
               className="aspect-[4/3] w-full max-w-md rounded-[2rem] object-cover shadow-xl ring-8 ring-[#f1e2cf]"
             />
           ) : (
-            <Cup />
+            <HeroLogo />
           )}
         </div>
       </section>
@@ -229,7 +287,10 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-stone-200">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-3 px-4 py-8 text-sm text-stone-500 sm:flex-row sm:px-6">
-          <p className={serif.className + " text-lg font-semibold text-[#4a2c1a]"}>{CAFE.name}</p>
+          <p className={serif.className + " flex items-center gap-2 text-lg font-semibold text-[#4a2c1a]"}>
+            <Logo size={28} id="ftr" />
+            {CAFE.name}
+          </p>
           <p>{CAFE.address}</p>
         </div>
       </footer>
