@@ -159,6 +159,14 @@ export default function Home() {
             </a>
           </div>
           {CAFE.hours && <p className="mt-6 text-sm text-stone-500">{CAFE.hours}</p>}
+          <div className="mt-8 hidden items-center gap-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-stone-200 sm:inline-flex">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={img("menu-qr.svg")} alt="QR code to open the AR Cafe menu" width={104} height={104} className="h-26 w-26" />
+            <div>
+              <p className={serif.className + " text-lg font-bold text-[#4a2c1a]"}>Menu on your phone</p>
+              <p className="mt-1 max-w-[12rem] text-sm text-stone-500">Scan with your camera to open our menu.</p>
+            </div>
+          </div>
         </div>
         <div className="flex justify-center">
           {site.heroImage ? (
