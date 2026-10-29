@@ -110,8 +110,29 @@
       "note": "From our counter",
       "items": [
         {
-          "name": "Bakery items",
-          "description": "Fresh bakes to enjoy with your tea",
+          "name": "Veg / egg puffs",
+          "description": "Flaky, hot and fresh from the oven",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Cakes & pastries",
+          "description": "Slices and pastries for every sweet tooth",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Buns & bread",
+          "description": "Soft buns and fresh bread daily",
+          "price": "",
+          "image": "",
+          "available": true
+        },
+        {
+          "name": "Cookies & biscuits",
+          "description": "Crunchy bites to go with your tea",
           "price": "",
           "image": "",
           "available": true
