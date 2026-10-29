@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Anek_Tamil, Mukta_Malar } from "next/font/google";
 import rawSite from "../content/site.json";
 import MenuNav from "./MenuNav";
 import OpenStatus from "./OpenStatus";
@@ -31,96 +30,32 @@ const CAFE = site.cafe;
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const img = (p: string) => (/^https?:\/\//.test(p) ? p : BASE + "/" + p.replace(/^\/+/, ""));
 
-const display = Anek_Tamil({ subsets: ["latin", "tamil"], axes: ["wdth"] });
-const body = Mukta_Malar({ subsets: ["latin", "tamil"], weight: ["400", "600", "700"] });
-
-// Champagne-gold palette
-
-const FOIL = "bg-linear-to-r from-[#A87F2E] via-[#E9CF8A] to-[#A87F2E]";
-const FOIL_TEXT = FOIL + " bg-clip-text text-transparent";
-const WHITE = { bg: "bg-white/85 ring-1 ring-[#E2CDA8]", text: "text-[#1F2B4D]", muted: "text-[#5A6175]", rule: "border-[#D9C3A0]", price: "text-[#8A6420]", ring: "ring-[#E2CDA8]" };
-const PEARL = { bg: "bg-[#FBF3E6]/90 ring-1 ring-[#E2CDA8]", text: "text-[#1F2B4D]", muted: "text-[#5A6175]", rule: "border-[#D9C3A0]", price: "text-[#8A6420]", ring: "ring-white" };
-const BOARDS = [WHITE, PEARL, PEARL, WHITE];
-
-function Band() {
-  return <div className={"h-1 " + FOIL} aria-hidden="true" />;
-}
-
 export const metadata: Metadata = {
   title: CAFE.name + " | " + CAFE.address,
   description: CAFE.name + " - " + CAFE.intro,
 };
 
-// AR Cafe logo: a coffee bean "nucleus" with three multicolour orbits.
-function Logo({ size = 40, id = "lg", dark = false }: { size?: number; id?: string; dark?: boolean }) {
-  const bean = dark ? ["#f1d2a9", "#c49a6c"] : ["#7a4a2b", "#2b1a10"];
-  const bg = dark ? "#2b1a10" : "#faf6f0";
-  const orbits = dark
-    ? [["#EA580C", "#FBBF24"], ["#14B8A6", "#5EEAD4"], ["#DB2777", "#F9A8D4"]]
-    : [["#C2410C", "#F59E0B"], ["#0F766E", "#2DD4BF"], ["#9D174D", "#EC4899"]];
-  return (
-    <svg width={size} height={size} viewBox="0 0 400 400" aria-hidden="true">
-      <defs>
-        {orbits.map((c, i) => (
-          <linearGradient key={i} id={id + "o" + i} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stopColor={c[0]} />
-            <stop offset="1" stopColor={c[1]} />
-          </linearGradient>
-        ))}
-        <linearGradient id={id + "b"} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={bean[0]} />
-          <stop offset="1" stopColor={bean[1]} />
-        </linearGradient>
-      </defs>
-      {[0, 60, 120].map((r, i) => (
-        <ellipse key={r} cx="200" cy="200" rx="170" ry="58" fill="none" stroke={`url(#${id}o${i})`} strokeWidth="16" transform={`rotate(${r} 200 200)`} />
-      ))}
-      <g transform="rotate(-28 200 200)">
-        <ellipse cx="200" cy="200" rx="50" ry="68" fill={`url(#${id}b)`} />
-        <path d="M200 138 C180 172 220 228 200 262" fill="none" stroke={bg} strokeWidth="10" strokeLinecap="round" />
-      </g>
-      <circle cx="370" cy="200" r="22" fill={orbits[0][1]} stroke={bg} strokeWidth="6" />
-    </svg>
-  );
-}
+// Stand-in photographs from Hallmark's library (Wikimedia Commons, CC0) until the cafe's own photos replace them.
+const COMMONS = "https://upload.wikimedia.org/wikipedia/commons/thumb/";
+const thumbs = (path: string, file: string) => ({
+  src: `${COMMONS}${path}/${file}/1280px-${file}`,
+  srcSet: [960, 1280, 1920].map((w) => `${COMMONS}${path}/${file}/${w}px-${file} ${w}w`).join(", "),
+});
+const HERO_PHOTO = {
+  ...thumbs("d/df", "Castella_002.jpg"),
+  credit: { name: "Ocdp", href: "https://commons.wikimedia.org/wiki/File:Castella_002.jpg" },
+};
+const BENTO_PHOTO = {
+  ...thumbs("0/0f", "Almond_croissant_-_Workshop_Coffee_Lab_2025-06-27.jpg"),
+  credit: { name: "Andy Li", href: "https://commons.wikimedia.org/wiki/File:Almond_croissant_-_Workshop_Coffee_Lab_2025-06-27.jpg" },
+};
 
-// Large animated version for the hero (shown when no hero photo is set).
-function HeroLogo() {
-  const orbits = [
-    { from: "#9D174D", to: "#EC4899", rot: 0, dur: "3.4s", path: "M360 200 A160 54 0 1 1 40 200 A160 54 0 1 1 360 200" },
-    { from: "#0F766E", to: "#2DD4BF", rot: 60, dur: "4.3s", path: "M40 200 A160 54 0 1 1 360 200 A160 54 0 1 1 40 200" },
-    { from: "#C2410C", to: "#F59E0B", rot: 120, dur: "5.2s", path: "M200 146 A160 54 0 1 1 200 254 A160 54 0 1 1 200 146" },
-  ];
-  return (
-    <svg viewBox="0 0 400 400" role="img" aria-label="AR Cafe logo" className="h-auto w-full max-w-sm">
-      <defs>
-        {orbits.map((o, i) => (
-          <linearGradient key={i} id={"hero" + i} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stopColor={o.from} />
-            <stop offset="1" stopColor={o.to} />
-          </linearGradient>
-        ))}
-        <linearGradient id="heroBean" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#F2D98A" />
-          <stop offset="1" stopColor="#9C7424" />
-        </linearGradient>
-      </defs>
-      <circle cx="200" cy="200" r="196" fill="#FFFFFF" />
-      <circle cx="200" cy="200" r="182" fill="none" stroke="#C9A24A" strokeWidth="3" strokeLinecap="round" strokeDasharray="0.5 11" />
-      {orbits.map((o, i) => (
-        <g key={i} transform={`rotate(${o.rot} 200 200)`}>
-          <ellipse cx="200" cy="200" rx="160" ry="54" fill="none" stroke={`url(#hero${i})`} strokeWidth="9" />
-          <circle r="11" fill="#FFFFFF" stroke="#1F2B4D" strokeWidth="3" className="motion-reduce:hidden">
-            <animateMotion dur={o.dur} repeatCount="indefinite" path={o.path} />
-          </circle>
-        </g>
-      ))}
-      <g transform="rotate(-28 200 200)">
-        <ellipse cx="200" cy="200" rx="40" ry="54" fill="url(#heroBean)" />
-        <path d="M200 150 C184 178 216 222 200 250" fill="none" stroke="#FFFFFF" strokeWidth="7" strokeLinecap="round" />
-      </g>
-    </svg>
-  );
+const SLOT_SCRIPT = `window.hallmarkSlots = (m) => { for (const [k, v] of Object.entries(m)) { const s = document.querySelector(\`[data-slot="\${k}"]\`); if (!s) continue; const im = new Image(); im.src = typeof v === 'string' ? v : v.src; im.alt = (typeof v === 'object' && v.alt) || s.dataset.alt || ''; s.querySelectorAll(':scope > img').forEach((o) => o.remove()); s.prepend(im); } };
+document.querySelectorAll('[data-slot] img').forEach((i) => { if (i.complete && !i.naturalWidth) i.remove(); else i.addEventListener('error', () => i.remove(), { once: true }); });`;
+
+function Wordmark({ size }: { size: number }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={img("logo.svg")} width={size} height={size} alt="" />;
 }
 
 export default function Home() {
@@ -130,6 +65,15 @@ export default function Home() {
     encodeURIComponent(CAFE.name + " " + CAFE.address);
   const sections = site.menu.filter((s) => s.items.length > 0);
   const special = (CAFE.special || "").trim();
+
+  // The first sentence of the welcome text leads the hero; the rest opens the About section.
+  const introParts = CAFE.intro.split(/(?<=\.)\s+/);
+  const heroLine = introParts[0] || "";
+  const aboutLine = introParts.slice(1).join(" ");
+
+  const usesStandInHero = !site.heroImage;
+  const credits = [...(usesStandInHero ? [HERO_PHOTO.credit] : []), BENTO_PHOTO.credit];
+
   const hrs = parseHours(CAFE.hours);
   const siteUrl = "https://sdnasar2001.github.io" + BASE + "/";
   const jsonLd = {
@@ -162,214 +106,214 @@ export default function Home() {
       : {}),
   };
 
-  const wide = display.className + " [font-stretch:125%]";
-  const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F2B4D]";
-  const btnGold = "rounded-full px-7 py-3.5 text-center font-bold text-[#1F2B4D] shadow-sm transition hover:brightness-105 " + FOIL + " " + focus;
-  const btnLine = "rounded-full border-2 border-[#1F2B4D] px-7 py-3 text-center font-bold text-[#1F2B4D] transition hover:bg-[#1F2B4D] hover:text-white " + focus;
-  const champagne = {
-    background:
-      "radial-gradient(900px 500px at 85% 0%, #FFF7EA 0%, rgba(255,247,234,0) 60%), radial-gradient(700px 400px at 10% 60%, rgba(255,250,242,0.7) 0%, rgba(255,250,242,0) 70%), linear-gradient(165deg, #CDB28B 0%, #E5D2B3 30%, #F3E7D5 60%, #FBF7F0 100%)",
-  };
-
   return (
-    <main style={champagne} className={body.className + " min-h-screen text-[#1F2B4D] antialiased"}>
-      {/* Navigation */}
-      <header className="sticky top-0 z-20 bg-white/75 backdrop-blur-md">
-        <Band />
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          <a href="#top" className={wide + " flex items-center gap-2.5 rounded text-2xl font-bold text-[#1F2B4D] " + focus}>
-            <Logo size={40} id="hdr" />
-            {CAFE.name}
+    <main>
+      {/* Details for Google search results */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+
+      <header className="nav">
+        <div className="container nav__inner">
+          <a href="#top" className="wordmark" aria-label={CAFE.name + ", back to top"}>
+            <Wordmark size={40} />
+            <span className="wordmark__name">{CAFE.name}</span>
+            <span className="wordmark__tamil" lang="ta">ஏ.ஆர். கஃபே</span>
           </a>
-          <nav className="flex items-center gap-5 text-[15px] font-semibold sm:gap-8">
-            <a href="#menu" className={"rounded hover:text-[#8A6420] " + focus}>Menu</a>
-            <a href="#about" className={"hidden rounded hover:text-[#8A6420] sm:inline " + focus}>About</a>
-            <a href="#visit" className={"rounded-full bg-[#1F2B4D] px-4 py-2 text-white hover:bg-[#2C3B66] " + focus}>Visit us</a>
+          <nav className="nav__links" aria-label="Main">
+            <a href="#menu" className="nav__link">Menu</a>
+            <a href="#about" className="nav__link nav__link--wide">About</a>
+            <a href="#visit" className="btn btn--primary btn--small">Visit us</a>
           </nav>
         </div>
       </header>
 
-      {/* Details for Google search results */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-
       {/* Today's special (set from the admin page) */}
       {special && (
-        <div className="px-3 pt-4 sm:px-4">
-          <p className={"mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-2xl px-5 py-3 text-center text-[#1F2B4D] " + FOIL}>
-            <span className="rounded-full bg-[#1F2B4D] px-3 py-0.5 text-sm font-bold text-white">Today&apos;s special</span>
-            <span className="text-lg font-bold">{special}</span>
+        <div className="container special">
+          <p className="special__bar" role="status">
+            <span className="special__tag">Today&apos;s special</span>
+            <span className="special__text">{special}</span>
           </p>
         </div>
       )}
 
       {/* Hero */}
-      <section id="top" className="px-3 pt-4 sm:px-4 sm:pt-6">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-white/55 ring-1 ring-white/80 backdrop-blur-sm">
-          <div className="grid items-center gap-10 px-6 py-12 sm:px-10 md:grid-cols-[1.15fr_1fr] md:py-20 lg:px-16">
-            <div>
-              <p className={wide + " text-6xl font-bold leading-[0.95] text-[#1F2B4D] sm:text-7xl lg:text-8xl"}>{CAFE.name}</p>
-              <div className={"mt-4 h-[3px] w-28 rounded-full " + FOIL} aria-hidden="true" />
-              <p className={display.className + " mt-4 text-3xl font-bold text-[#8A6420] sm:text-4xl"}>ஏ.ஆர். கஃபே</p>
-              <h1 className="mt-8 max-w-xl text-2xl font-semibold leading-snug sm:text-3xl">{CAFE.tagline}</h1>
-              <p className="mt-4 max-w-lg text-lg leading-relaxed text-[#4A5268]">{CAFE.intro}</p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href="#menu" className={btnGold}>See our menu</a>
-                <a href={mapsUrl} className={btnLine}>Get directions</a>
+      <section id="top">
+        <div className="container hero hero__grid">
+          <div>
+            <h1>{CAFE.tagline}</h1>
+            {heroLine && <p className="lead">{heroLine}</p>}
+            <div className="hero__actions">
+              <a href="#menu" className="btn btn--primary">See our menu</a>
+              <a href={mapsUrl} className="btn btn--line">Get directions</a>
+            </div>
+            {CAFE.hours && (
+              <div className="hero__status">
+                <OpenStatus hours={CAFE.hours} />
               </div>
-              {CAFE.hours && (
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <OpenStatus hours={CAFE.hours} />
-                  <p className="font-semibold text-[#8A6420]">{CAFE.hours}</p>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col items-center gap-6">
-              {site.heroImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={img(site.heroImage)} alt={CAFE.name} className="aspect-square w-full max-w-sm rounded-full object-cover ring-8 ring-white shadow-[0_20px_60px_-20px_rgba(138,100,32,0.45)]" />
-              ) : (
-                <div className="w-full max-w-sm rounded-full shadow-[0_20px_60px_-20px_rgba(138,100,32,0.45)]">
-                  <HeroLogo />
-                </div>
-              )}
-              <div className="hidden items-center gap-4 rounded-2xl bg-white p-3 pr-5 ring-1 ring-[#E2CDA8] sm:inline-flex">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={img("menu-qr.svg")} alt="QR code to open the AR Cafe menu" width={96} height={96} className="h-24 w-24" />
-                <div>
-                  <p className={display.className + " text-lg font-bold text-[#1F2B4D]"}>Menu on your phone</p>
-                  <p className="max-w-[12rem] text-sm text-[#5A6175]">Scan with your camera to open our menu.</p>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
-        </div>
-      </section>
-
-      {/* Highlights */}
-      {site.highlights.length > 0 && (
-        <section id="about" className="py-16 md:py-20">
-          <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 md:grid-cols-3">
-            {site.highlights.map((h, i) => (
-              <div key={i} className="flex gap-4">
-                <span aria-hidden="true" className={"mt-1.5 grid h-9 w-9 flex-none place-items-center rounded-full " + FOIL}>
-                  <span className="h-2 w-2 rounded-full bg-white" />
-                </span>
-                <div>
-                  <h2 className={wide + " text-2xl font-bold"}>{h.title}</h2>
-                  <p className="mt-1 text-lg leading-relaxed text-[#4A5268]">{h.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Menu */}
-      <section id="menu" className="scroll-mt-20 pb-20 md:pb-28">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex flex-wrap items-end justify-between gap-4 pb-5">
-            <div>
-              <h2 className={wide + " text-5xl font-bold md:text-6xl"}>Our menu</h2>
-              <p className={display.className + " mt-1 text-2xl font-bold text-[#8A6420]"}>மெனு</p>
-            </div>
-            <p className="max-w-xs text-lg text-[#4A5268]">Ask at the counter for today&apos;s specials.</p>
-          </div>
-          <div className={"h-px " + FOIL} aria-hidden="true" />
-          <div className="mt-8 grid grid-cols-1 gap-6 md:mt-10 md:grid-cols-[220px_minmax(0,1fr)] md:items-start md:gap-8">
-            <MenuNav titles={sections.map((sec) => sec.title)} />
-            <div className="grid min-w-0 gap-5">
-            {sections.map((section, si) => {
-              const b = BOARDS[si % BOARDS.length];
-              return (
-                <div key={si} id={"cat-" + si} className={"scroll-mt-36 md:scroll-mt-24 rounded-[1.75rem] p-7 shadow-[0_10px_40px_-24px_rgba(138,100,32,0.5)] backdrop-blur-sm sm:p-9 " + b.bg + " " + b.text}>
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <h3 className={wide + " text-3xl font-bold"}>{section.title}</h3>
-                    {section.note && <span className="text-base font-semibold text-[#8A6420]">{section.note}</span>}
-                  </div>
-                  <ul className="mt-6 space-y-5">
-                    {section.items.map((item, ii) => (
-                      <li key={ii} className={"flex gap-4" + (item.available ? "" : " opacity-60")}>
-                        {item.image && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={img(item.image)} alt={item.name} loading="lazy" className={"h-16 w-16 flex-none rounded-full object-cover ring-[3px] " + b.ring} />
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-baseline gap-3">
-                            <p className="text-lg font-bold">{item.name}</p>
-                            {item.price && (
-                              <>
-                                <span className={"mb-1.5 flex-1 border-b-2 border-dotted " + b.rule} />
-                                <p className={wide + " whitespace-nowrap text-xl font-bold " + b.price}>
-                                  {CAFE.currency} {item.price}
-                                </p>
-                              </>
-                            )}
-                          </div>
-                          {item.description && <p className={b.muted}>{item.description}</p>}
-                          {!item.available && <p className="mt-1 text-sm font-bold">Not available today</p>}
-                          {item.available && hasPhone && <AddToOrder name={item.name} price={item.price} />}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-            </div>
+          <div className="hero__media" data-slot="hero" data-alt="Your counter, or a glass of tea beside fresh bakes">
+            {site.heroImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={img(site.heroImage)} alt={CAFE.name} width={1280} height={960} fetchPriority="high" />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={HERO_PHOTO.src}
+                srcSet={HERO_PHOTO.srcSet}
+                sizes="(max-width: 60rem) 100vw, 55vw"
+                alt="A glass of tea beside slices of sponge cake"
+                width={1280}
+                height={850}
+                fetchPriority="high"
+              />
+            )}
           </div>
         </div>
       </section>
 
       {/* Visit */}
-      <section id="visit" className="scroll-mt-20 px-3 pb-4 sm:px-4 sm:pb-6">
-        <div className="mx-auto max-w-7xl rounded-[2rem] bg-[#1F2B4D] px-6 py-14 text-white sm:px-10 md:py-20 lg:px-16">
-          <div className="grid gap-10 md:grid-cols-2 md:items-end">
-            <div>
-              <p className={display.className + " text-3xl font-bold text-[#E9CF8A]"}>வாங்க!</p>
-              <h2 className={wide + " mt-1 pb-1 text-5xl font-bold md:text-6xl " + FOIL_TEXT}>Come say hello</h2>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <a href={mapsUrl} className={"rounded-full px-7 py-3.5 text-center font-bold text-[#1F2B4D] transition hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white " + FOIL}>
-                  Get directions
+      <section id="visit" className="visit">
+        <div className="container visit__grid">
+          <div className="visit__head">
+            <p className="visit__tamil" lang="ta">வாங்க!</p>
+            <h2>Come say hello</h2>
+            <div className="visit__actions">
+              <a href={mapsUrl} className="btn btn--gold">Get directions</a>
+              {hasPhone && (
+                <a href={"tel:+" + CAFE.phone} className="btn btn--line-light">
+                  Call +{CAFE.phone}
                 </a>
-                {hasPhone && (
-                  <a href={"tel:+" + CAFE.phone} className="rounded-full border-2 border-[#E9CF8A] px-7 py-3 text-center font-bold text-[#F6E7C1] transition hover:bg-[#E9CF8A] hover:text-[#1F2B4D] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-                    Call +{CAFE.phone}
-                  </a>
-                )}
-                {hasPhone && (
-                  <a href={"https://wa.me/" + CAFE.phone} className="rounded-full border-2 border-[#E9CF8A] px-7 py-3 text-center font-bold text-[#F6E7C1] transition hover:bg-[#E9CF8A] hover:text-[#1F2B4D] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-                    WhatsApp us
-                  </a>
-                )}
+              )}
+              {hasPhone && (
+                <a href={"https://wa.me/" + CAFE.phone} className="btn btn--line-light">
+                  WhatsApp us
+                </a>
+              )}
+            </div>
+          </div>
+          <dl className="visit__facts">
+            <div>
+              <dt>Find us</dt>
+              <dd>{CAFE.address}</dd>
+            </div>
+            <div>
+              <dt>Opening hours</dt>
+              <dd>{CAFE.hours}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      {/* About */}
+      {site.highlights.length > 0 && (
+        <section id="about" className="about">
+          <div className="container">
+            <div className="about__head">
+              <h2>Cooked in our own kitchen</h2>
+              {aboutLine && <p className="lead">{aboutLine}</p>}
+            </div>
+            <div className="bento">
+              <div className="bento__photo" data-slot="photo-1" data-alt="Your shop, or a tray of fresh puffs from the oven">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={BENTO_PHOTO.src} srcSet={BENTO_PHOTO.srcSet} sizes="(max-width: 60rem) 100vw, 55vw" alt="A sugared almond croissant on a cafe table" width={1280} height={964} loading="lazy" />
+              </div>
+              {site.highlights.map((h, i) => (
+                <div key={i} className="tile">
+                  <h3>{h.title}</h3>
+                  <p>{h.text}</p>
+                </div>
+              ))}
+              <div className="tile tile--qr">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={img("menu-qr.svg")} alt="QR code that opens the AR Cafe menu" width={104} height={104} />
+                <div>
+                  <h3>Menu on your phone</h3>
+                  <p>Scan with your camera to open our menu.</p>
+                </div>
               </div>
             </div>
-            <dl className="grid gap-6 text-xl sm:grid-cols-2">
-              <div>
-                <dt className="font-semibold text-[#C9CFDD]">Find us</dt>
-                <dd className="mt-1 font-bold">{CAFE.address}</dd>
-              </div>
-              <div>
-                <dt className="font-semibold text-[#C9CFDD]">Opening hours</dt>
-                <dd className="mt-1 font-bold">{CAFE.hours}</dd>
-              </div>
-            </dl>
+          </div>
+        </section>
+      )}
+
+      {/* Menu */}
+      <section id="menu" className="menu">
+        <div className="container">
+          <div className="menu__head">
+            <div>
+              <h2>Our menu</h2>
+              <p className="menu__tamil" lang="ta">மெனு</p>
+            </div>
+            <p className="menu__note">Ask at the counter for today&apos;s specials.</p>
+          </div>
+          <div className="menu__layout">
+            <MenuNav titles={sections.map((sec) => sec.title)} />
+            <div className="menu__list">
+              {sections.map((section, si) => (
+                <article key={si} id={"cat-" + si} className="cat">
+                  <div className="cat__head">
+                    <h3>{section.title}</h3>
+                    {section.note && <p className="cat__note">{section.note}</p>}
+                  </div>
+                  <ul className="items">
+                    {section.items.map((item, ii) => (
+                      <li key={ii} className={"item" + (item.image ? "" : " item--noimg") + (item.available ? "" : " item--off")}>
+                        {item.image && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={img(item.image)} alt="" loading="lazy" width={72} height={72} className="item__img" />
+                        )}
+                        <div>
+                          <p className="item__name">{item.name}</p>
+                          {item.description && <p className="item__desc">{item.description}</p>}
+                          {!item.available && <p className="item__off">Not available today</p>}
+                          {item.available && hasPhone && <AddToOrder name={item.name} price={item.price} />}
+                        </div>
+                        {item.price && (
+                          <p className="item__price">
+                            {CAFE.currency} {item.price}
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer>
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-3 px-4 py-8 text-[#4A5268] sm:flex-row sm:items-center sm:px-6">
-          <p className={wide + " flex items-center gap-2 text-xl font-bold text-[#1F2B4D]"}>
-            <Logo size={30} id="ftr" />
-            {CAFE.name}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer__mast">
+            <Wordmark size={72} />
+            <p className="footer__name">{CAFE.name}</p>
+            <p className="footer__tamil" lang="ta">ஏ.ஆர். கஃபே</p>
+          </div>
+          <div className="footer__row">
+            <ul className="footer__links">
+              <li><a href="#menu">Menu</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#visit">Visit us</a></li>
+            </ul>
+            <p>{CAFE.address}</p>
+          </div>
+          <p className="footer__credits" data-credits>
+            Photographs:{" "}
+            {credits.map((c, i) => (
+              <span key={c.href}>
+                {i > 0 && ", "}
+                <a href={c.href}>{c.name}</a> (CC0, Wikimedia Commons)
+              </span>
+            ))}
           </p>
-          <p>{CAFE.address}</p>
         </div>
-        <Band />
       </footer>
-      <div className="h-24" aria-hidden="true" />
+      <div className="orderbar-space" aria-hidden="true" />
       <OrderBar phone={hasPhone ? CAFE.phone : ""} currency={CAFE.currency} cafe={CAFE.name} />
+      <script dangerouslySetInnerHTML={{ __html: SLOT_SCRIPT }} />
     </main>
   );
 }

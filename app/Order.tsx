@@ -30,8 +30,6 @@ function toPrice(p: string) {
   return Number.isFinite(n) ? n : null;
 }
 
-const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F2B4D]";
-
 export function AddToOrder({ name, price }: { name: string; price: string }) {
   const list = useSyncExternalStore(subscribe, snapshot, serverSnapshot);
   const qty = list.find((l) => l.name === name)?.qty ?? 0;
@@ -39,22 +37,18 @@ export function AddToOrder({ name, price }: { name: string; price: string }) {
 
   if (qty === 0) {
     return (
-      <button
-        type="button"
-        onClick={() => change(name, p, 1)}
-        className={"mt-2 inline-flex min-h-9 items-center rounded-full border border-[#C9A24A] bg-white/70 px-4 text-sm font-bold text-[#1F2B4D] transition-colors hover:bg-[#FBF3E6] " + focus}
-      >
+      <button type="button" onClick={() => change(name, p, 1)} className="add">
         + Add to order
       </button>
     );
   }
   return (
-    <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#1F2B4D] p-1 text-white">
-      <button type="button" onClick={() => change(name, p, -1)} aria-label={"Remove one " + name} className={"grid h-8 w-8 place-items-center rounded-full text-lg font-bold hover:bg-white/15 " + focus}>
+    <div className="stepper">
+      <button type="button" onClick={() => change(name, p, -1)} aria-label={"Remove one " + name} className="stepper__btn">
         −
       </button>
-      <span className="min-w-6 text-center text-sm font-bold" aria-live="polite">{qty}</span>
-      <button type="button" onClick={() => change(name, p, 1)} aria-label={"Add one more " + name} className={"grid h-8 w-8 place-items-center rounded-full text-lg font-bold hover:bg-white/15 " + focus}>
+      <span className="stepper__qty" aria-live="polite">{qty}</span>
+      <button type="button" onClick={() => change(name, p, 1)} aria-label={"Add one more " + name} className="stepper__btn">
         +
       </button>
     </div>
@@ -82,33 +76,27 @@ export function OrderBar({ phone, currency, cafe }: { phone: string; currency: s
   const href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 px-3 pb-3 sm:px-4 sm:pb-4">
-      <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#1F2B4D] px-5 py-3 text-white shadow-[0_12px_40px_-12px_rgba(31,43,77,0.6)]">
-        <p className="font-semibold">
-          {count} {count === 1 ? "item" : "items"}
-          <span className="text-[#E9CF8A]">
-            {" "}
+    <div className="orderbar">
+      <div className="orderbar__inner">
+        <p>
+          {count} {count === 1 ? "item" : "items"}{" "}
+          <span className="orderbar__total">
             {currency} {total}
             {unpriced ? "+" : ""}
           </span>
         </p>
-        <div className="flex items-center gap-2">
+        <div className="orderbar__actions">
           <button
             type="button"
             onClick={() => {
               lines = [];
               emit();
             }}
-            className="rounded-full px-3 py-2 text-sm font-semibold text-white/80 hover:text-white focus-visible:outline-2 focus-visible:outline-white"
+            className="orderbar__clear"
           >
             Clear
           </button>
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full bg-[#25D366] px-5 py-2.5 font-bold text-[#0B3D20] transition hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
+          <a href={href} target="_blank" rel="noopener noreferrer" className="btn btn--whatsapp">
             Send order on WhatsApp
           </a>
         </div>
