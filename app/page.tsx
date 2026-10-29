@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Anek_Tamil, Mukta_Malar } from "next/font/google";
 import rawSite from "../content/site.json";
 import MenuNav from "./MenuNav";
+import OpenStatus from "./OpenStatus";
+import { AddToOrder, OrderBar } from "./Order";
+import { parseHours, hhmm } from "./hours";
 
 // All content comes from content/site.json - edit it from the admin page (/admin/).
 
@@ -16,6 +19,7 @@ type Site = {
     address: string;
     hours: string;
     currency: string;
+    special?: string;
   };
   heroImage: string;
   highlights: { title: string; text: string }[];
@@ -125,6 +129,38 @@ export default function Home() {
     "https://www.google.com/maps/search/?api=1&query=" +
     encodeURIComponent(CAFE.name + " " + CAFE.address);
   const sections = site.menu.filter((s) => s.items.length > 0);
+  const special = (CAFE.special || "").trim();
+  const hrs = parseHours(CAFE.hours);
+  const siteUrl = "https://sdnasar2001.github.io" + BASE + "/";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    name: CAFE.name,
+    url: siteUrl,
+    image: siteUrl + "icon.svg",
+    description: CAFE.intro,
+    servesCuisine: ["South Indian", "Tea", "Coffee", "Bakery"],
+    menu: siteUrl + "#menu",
+    priceRange: "₹",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Revu Main Road",
+      addressLocality: "Parangipettai",
+      addressRegion: "Tamil Nadu",
+      addressCountry: "IN",
+    },
+    ...(hasPhone ? { telephone: "+" + CAFE.phone } : {}),
+    ...(hrs
+      ? {
+          openingHoursSpecification: {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            opens: hhmm(hrs.open),
+            closes: hhmm(hrs.close),
+          },
+        }
+      : {}),
+  };
 
   const wide = display.className + " [font-stretch:125%]";
   const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F2B4D]";
@@ -153,6 +189,19 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Details for Google search results */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+
+      {/* Today's special (set from the admin page) */}
+      {special && (
+        <div className="px-3 pt-4 sm:px-4">
+          <p className={"mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-2xl px-5 py-3 text-center text-[#1F2B4D] " + FOIL}>
+            <span className="rounded-full bg-[#1F2B4D] px-3 py-0.5 text-sm font-bold text-white">Today&apos;s special</span>
+            <span className="text-lg font-bold">{special}</span>
+          </p>
+        </div>
+      )}
+
       {/* Hero */}
       <section id="top" className="px-3 pt-4 sm:px-4 sm:pt-6">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-white/55 ring-1 ring-white/80 backdrop-blur-sm">
@@ -167,7 +216,12 @@ export default function Home() {
                 <a href="#menu" className={btnGold}>See our menu</a>
                 <a href={mapsUrl} className={btnLine}>Get directions</a>
               </div>
-              {CAFE.hours && <p className="mt-6 font-semibold text-[#8A6420]">{CAFE.hours}</p>}
+              {CAFE.hours && (
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <OpenStatus hours={CAFE.hours} />
+                  <p className="font-semibold text-[#8A6420]">{CAFE.hours}</p>
+                </div>
+              )}
             </div>
             <div className="flex flex-col items-center gap-6">
               {site.heroImage ? (
@@ -253,6 +307,7 @@ export default function Home() {
                           </div>
                           {item.description && <p className={b.muted}>{item.description}</p>}
                           {!item.available && <p className="mt-1 text-sm font-bold">Not available today</p>}
+                          {item.available && hasPhone && <AddToOrder name={item.name} price={item.price} />}
                         </div>
                       </li>
                     ))}
@@ -313,6 +368,8 @@ export default function Home() {
         </div>
         <Band />
       </footer>
+      <div className="h-24" aria-hidden="true" />
+      <OrderBar phone={hasPhone ? CAFE.phone : ""} currency={CAFE.currency} cafe={CAFE.name} />
     </main>
   );
 }
