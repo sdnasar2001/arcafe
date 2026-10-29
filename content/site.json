@@ -31,21 +31,21 @@
         {
           "name": "Tea",
           "description": "Strong, milky and just right",
-          "price": "",
+          "price": "12",
           "image": "",
           "available": true
         },
         {
           "name": "Coffee",
           "description": "Hot and freshly made",
-          "price": "",
+          "price": "15",
           "image": "",
           "available": true
         },
         {
           "name": "Special teas",
           "description": "Different tea varieties - ask what is brewing today",
-          "price": "",
+          "price": "15",
           "image": "",
           "available": true
         }
@@ -58,28 +58,28 @@
         {
           "name": "Idli",
           "description": "Soft and fluffy, served hot",
-          "price": "",
+          "price": "10",
           "image": "",
           "available": true
         },
         {
           "name": "Dosa",
           "description": "Crisp and golden",
-          "price": "",
+          "price": "20",
           "image": "",
           "available": true
         },
         {
           "name": "Vada",
           "description": "Crunchy outside, soft inside",
-          "price": "",
+          "price": "10",
           "image": "",
           "available": true
         },
         {
           "name": "Samosa",
           "description": "Spiced and freshly fried",
-          "price": "",
+          "price": "10",
           "image": "",
           "available": true
         }
