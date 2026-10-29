@@ -120,21 +120,21 @@
           "name": "Cakes & pastries",
           "description": "Slices and pastries for every sweet tooth",
           "price": "",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1748712869489-95dce7262348?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         },
         {
           "name": "Buns & bread",
           "description": "Soft buns and fresh bread daily",
           "price": "",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1618662320780-d372ccc13cf2?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         },
         {
           "name": "Cookies & biscuits",
           "description": "Crunchy bites to go with your tea",
           "price": "",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1601316374308-50067f1004e8?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         },
         {
