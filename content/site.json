@@ -142,7 +142,7 @@
           "description": "Pack some for home or the road",
           "price": "",
           "image": "",
-          "available": true
+          "available": false
         }
       ]
     }
