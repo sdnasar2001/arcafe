@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Anek_Tamil, Mukta_Malar } from "next/font/google";
 import rawSite from "../content/site.json";
+import MenuNav from "./MenuNav";
 
 // All content comes from content/site.json - edit it from the admin page (/admin/).
 
@@ -220,11 +221,13 @@ export default function Home() {
             <p className="max-w-xs text-lg text-[#4A5268]">Ask at the counter for today&apos;s specials.</p>
           </div>
           <div className={"h-px " + FOIL} aria-hidden="true" />
-          <div className="mt-10 grid gap-5 md:grid-cols-2 md:items-start">
+          <div className="mt-8 grid grid-cols-1 gap-6 md:mt-10 md:grid-cols-[220px_minmax(0,1fr)] md:items-start md:gap-8">
+            <MenuNav titles={sections.map((sec) => sec.title)} />
+            <div className="grid min-w-0 gap-5">
             {sections.map((section, si) => {
               const b = BOARDS[si % BOARDS.length];
               return (
-                <div key={si} className={"rounded-[1.75rem] p-7 shadow-[0_10px_40px_-24px_rgba(138,100,32,0.5)] backdrop-blur-sm sm:p-9 " + b.bg + " " + b.text}>
+                <div key={si} id={"cat-" + si} className={"scroll-mt-36 md:scroll-mt-24 rounded-[1.75rem] p-7 shadow-[0_10px_40px_-24px_rgba(138,100,32,0.5)] backdrop-blur-sm sm:p-9 " + b.bg + " " + b.text}>
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                     <h3 className={wide + " text-3xl font-bold"}>{section.title}</h3>
                     {section.note && <span className="text-base font-semibold text-[#8A6420]">{section.note}</span>}
@@ -257,6 +260,7 @@ export default function Home() {
                 </div>
               );
             })}
+            </div>
           </div>
         </div>
       </section>
