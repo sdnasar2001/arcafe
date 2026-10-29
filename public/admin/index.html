@@ -525,14 +525,17 @@
   (function init() {
     var host = location.hostname;
     var parts = location.pathname.split("/").filter(Boolean);
-    var owner = "sdnasar2001", repo = "mysite";
-    if (/\.github\.io$/i.test(host)) {
+    var owner = "sdnasar2001", repo = "arcafe";
+    var onPages = /\.github\.io$/i.test(host);
+    if (onPages) {
       owner = host.split(".")[0];
       repo = parts.length > 1 ? parts[0] : host;
     }
     var stored = loadStore();
-    $("owner").value = stored.owner || owner;
-    $("repo").value = stored.repo || repo;
+    // On GitHub Pages the web address always tells us the current repository name,
+    // so a renamed repository is picked up automatically.
+    $("owner").value = onPages ? owner : (stored.owner || owner);
+    $("repo").value = onPages ? repo : (stored.repo || repo);
     if (/\.github\.io$/i.test(host) && parts.length > 1) $("liveLink").href = "/" + parts[0] + "/";
     else $("liveLink").href = "/";
     if (stored.token) {
