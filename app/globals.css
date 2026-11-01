@@ -264,7 +264,7 @@ body {
 .scrolly--no3d .scrolly__stage { display: none; }
 
 /* With scripting and motion: pin the stage and swap the panels as you scroll */
-.scrolly--on { height: 400dvh; }
+.scrolly--on { height: 340dvh; }
 .scrolly--on .scrolly__pin { position: sticky; top: 72px; height: calc(100dvh - 72px); min-height: 0; padding-block: 0; }
 .scrolly--on .scrolly__text { gap: 0; }
 .scrolly--on .scrolly__panel {

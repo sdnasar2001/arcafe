@@ -34,20 +34,22 @@ export default function Scroll3D({ intro, steps, currency, orderable }: { intro:
     // move with your finger instead of switching.
     const clamp = (v: number) => Math.min(1, Math.max(0, v));
     const updatePanels = () => {
-      const f = progress * stepCount;
+      // f runs from 0 (intro centred) to stepCount - 1 (last panel centred).
+      const f = progress * (stepCount - 1);
       panels.forEach((panel, i) => {
-        const local = f - i;
-        const enter = i === 0 ? 0 : clamp((0.2 - local) / 0.2);
-        const leave = i === stepCount - 1 ? 0 : clamp((local - 0.8) / 0.2);
+        const d = f - i;
+        // the intro starts moving with the very first scroll; later panels hold briefly when centred
+        const enter = i === 0 ? 0 : clamp((-d - 0.12) / 0.38);
+        const leave = i === stepCount - 1 ? 0 : i === 0 ? clamp(d / 0.45) : clamp((d - 0.12) / 0.38);
         const opacity = (1 - enter) * (1 - leave);
         panel.style.opacity = opacity.toFixed(3);
-        panel.style.transform = `translate3d(0, ${(enter * 56 - leave * 56).toFixed(1)}px, 0)`;
+        panel.style.transform = `translate3d(0, ${(enter * 64 - leave * 64).toFixed(1)}px, 0)`;
         panel.style.setProperty("--enter", enter.toFixed(3));
         panel.style.visibility = opacity < 0.01 ? "hidden" : "visible";
         if (opacity > 0.5) panel.removeAttribute("inert");
         else panel.setAttribute("inert", "");
       });
-      sec.dataset.active = String(Math.min(stepCount - 1, Math.floor(f)));
+      sec.dataset.active = String(Math.round(f));
     };
     let ticking = false;
     const readScroll = () => {
@@ -62,6 +64,7 @@ export default function Scroll3D({ intro, steps, currency, orderable }: { intro:
       });
     };
     if (!reduced) {
+      sec.style.height = `calc(100dvh + ${(stepCount - 1) * 80}dvh)`;
       readScroll();
       window.addEventListener("scroll", readScroll, { passive: true });
     }
@@ -182,11 +185,13 @@ export default function Scroll3D({ intro, steps, currency, orderable }: { intro:
         const dt = Math.min(0.05, (now - last) / 1000);
         last = now;
         elapsed += reduced ? 0 : dt;
-        smooth += (progress - smooth) * (reduced ? 1 : 0.08);
+        smooth += (progress - smooth) * (reduced ? 1 : 0.12);
         const s = smooth * (stepCount - 1); // 0 = intro, 1 = tea, 2 = tiffin, 3 = bakery
+        const kick = Math.min(1, s * 2); // eases in over the first half step so the first scroll is felt
 
         logo.rotation.y = elapsed * 0.12 + smooth * Math.PI * 1.4;
-        logo.rotation.x = Math.sin(elapsed * 0.35) * 0.07 + Math.sin(smooth * Math.PI) * 0.25;
+        logo.rotation.x = Math.sin(elapsed * 0.35) * 0.07 + Math.sin(smooth * Math.PI) * 0.25 + kick * 0.18;
+        logo.position.y = -kick * 0.25;
         beanGroup.rotation.y = smooth * Math.PI * 2;
         const baseZ = camera.aspect < 1 ? 10.5 / Math.max(0.62, camera.aspect) : 11.5;
         camera.position.z = baseZ - Math.sin(smooth * Math.PI) * 0.9;
