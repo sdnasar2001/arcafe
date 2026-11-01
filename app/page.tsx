@@ -3,7 +3,7 @@ import rawSite from "../content/site.json";
 import MenuNav from "./MenuNav";
 import OpenStatus from "./OpenStatus";
 import Scroll3D from "./Scroll3D";
-import { AddToOrder, OrderBar } from "./Order";
+import { AddToOrder, OrderBar, OrderButton } from "./Order";
 import { parseHours, hhmm } from "./hours";
 
 // All content comes from content/site.json - edit it from the admin page (/admin/).
@@ -61,6 +61,7 @@ export default function Home() {
     "https://www.google.com/maps/search/?api=1&query=" +
     encodeURIComponent(CAFE.name + " " + CAFE.address);
   const sections = site.menu.filter((s) => s.items.length > 0);
+  const waHello = "https://wa.me/" + CAFE.phone + "?text=" + encodeURIComponent(`Hello ${CAFE.name}! I'd like to order:\n`);
   const special = (CAFE.special || "").trim();
 
   // The first sentence of the welcome text leads the hero; the rest opens the About section.
@@ -130,7 +131,8 @@ export default function Home() {
           <nav className="nav__links" aria-label="Main">
             <a href="#menu" className="nav__link">Menu</a>
             <a href="#about" className="nav__link nav__link--wide">About</a>
-            <a href="#visit" className="btn btn--primary btn--small">Visit us</a>
+            <a href="#visit" className="nav__link nav__link--wide">Visit</a>
+            {hasPhone ? <OrderButton /> : <a href="#visit" className="btn btn--primary btn--small">Visit us</a>}
           </nav>
         </div>
       </header>
@@ -147,6 +149,7 @@ export default function Home() {
 
       {/* Front section: the AR Cafe logo in 3D, turning as you scroll */}
       <Scroll3D
+        orderable={hasPhone}
         currency={CAFE.currency}
         steps={scrollSteps}
         intro={
@@ -154,8 +157,14 @@ export default function Home() {
             <h1>{CAFE.tagline}</h1>
             {heroLine && <p className="lead">{heroLine}</p>}
             <div className="hero__actions">
-              <a href="#menu" className="btn btn--primary">See our menu</a>
-              <a href={mapsUrl} className="btn btn--line">Get directions</a>
+              <a href="#menu" className="btn btn--primary">{hasPhone ? "Start your order" : "See our menu"}</a>
+              {hasPhone ? (
+                <a href={waHello} className="btn btn--line" target="_blank" rel="noopener noreferrer">
+                  Order on WhatsApp
+                </a>
+              ) : (
+                <a href={mapsUrl} className="btn btn--line">Get directions</a>
+              )}
             </div>
             {CAFE.hours && (
               <div className="hero__status">
@@ -165,6 +174,60 @@ export default function Home() {
           </>
         }
       />
+
+      {/* Menu */}
+      <section id="menu" className="menu">
+        <div className="container">
+          <div className="menu__head">
+            <div>
+              <h2>Our menu</h2>
+              <p className="menu__tamil" lang="ta">மெனு</p>
+            </div>
+            <p className="menu__note">Ask at the counter for today&apos;s specials.</p>
+          </div>
+          {hasPhone && (
+            <ol className="howto" aria-label="How ordering works">
+              <li><strong>Add</strong> what you&apos;d like from the menu</li>
+              <li><strong>Send</strong> the order to us on WhatsApp</li>
+              <li><strong>Collect</strong> it fresh at the counter</li>
+            </ol>
+          )}
+          <div className="menu__layout">
+            <MenuNav titles={sections.map((sec) => sec.title)} />
+            <div className="menu__list">
+              {sections.map((section, si) => (
+                <article key={si} id={"cat-" + si} className="cat">
+                  <div className="cat__head">
+                    <h3>{section.title}</h3>
+                    {section.note && <p className="cat__note">{section.note}</p>}
+                  </div>
+                  <ul className="items">
+                    {section.items.map((item, ii) => (
+                      <li key={ii} className={"item" + (item.image ? "" : " item--noimg") + (item.available ? "" : " item--off")}>
+                        {item.image && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={img(item.image)} alt="" loading="lazy" width={72} height={72} className="item__img" />
+                        )}
+                        <div>
+                          <p className="item__name">{item.name}</p>
+                          {item.description && <p className="item__desc">{item.description}</p>}
+                          {!item.available && <p className="item__off">Not available today</p>}
+                          {item.available && hasPhone && <AddToOrder name={item.name} price={item.price} />}
+                        </div>
+                        {item.price && (
+                          <p className="item__price">
+                            {CAFE.currency} {item.price}
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Visit */}
       <section id="visit" className="visit">
@@ -235,53 +298,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
-      {/* Menu */}
-      <section id="menu" className="menu">
-        <div className="container">
-          <div className="menu__head">
-            <div>
-              <h2>Our menu</h2>
-              <p className="menu__tamil" lang="ta">மெனு</p>
-            </div>
-            <p className="menu__note">Ask at the counter for today&apos;s specials.</p>
-          </div>
-          <div className="menu__layout">
-            <MenuNav titles={sections.map((sec) => sec.title)} />
-            <div className="menu__list">
-              {sections.map((section, si) => (
-                <article key={si} id={"cat-" + si} className="cat">
-                  <div className="cat__head">
-                    <h3>{section.title}</h3>
-                    {section.note && <p className="cat__note">{section.note}</p>}
-                  </div>
-                  <ul className="items">
-                    {section.items.map((item, ii) => (
-                      <li key={ii} className={"item" + (item.image ? "" : " item--noimg") + (item.available ? "" : " item--off")}>
-                        {item.image && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={img(item.image)} alt="" loading="lazy" width={72} height={72} className="item__img" />
-                        )}
-                        <div>
-                          <p className="item__name">{item.name}</p>
-                          {item.description && <p className="item__desc">{item.description}</p>}
-                          {!item.available && <p className="item__off">Not available today</p>}
-                          {item.available && hasPhone && <AddToOrder name={item.name} price={item.price} />}
-                        </div>
-                        {item.price && (
-                          <p className="item__price">
-                            {CAFE.currency} {item.price}
-                          </p>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="footer">

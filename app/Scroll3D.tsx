@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { AddToOrder } from "./Order";
 
 // A scroll story: the AR Cafe logo in 3D (a golden coffee bean inside three orbit rings).
 // The section is pinned while you scroll through four panels: the intro, then one panel
@@ -11,7 +12,7 @@ export type Step = { title: string; note: string; items: { name: string; price: 
 
 const RING_COLOURS = [0xc2410c, 0x0f766e, 0x9d174d]; // tea, tiffin, bakery (the logo's orbits)
 
-export default function Scroll3D({ intro, steps, currency }: { intro: ReactNode; steps: Step[]; currency: string }) {
+export default function Scroll3D({ intro, steps, currency, orderable }: { intro: ReactNode; steps: Step[]; currency: string; orderable?: boolean }) {
   const section = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -262,17 +263,18 @@ export default function Scroll3D({ intro, steps, currency }: { intro: ReactNode;
               <ul className="scrolly__items">
                 {st.items.map((it, n) => (
                   <li key={it.name} style={{ "--i": n } as CSSProperties}>
-                    <span>{it.name}</span>
+                    <span className="scrolly__name">{it.name}</span>
                     {it.price && (
                       <span className="scrolly__price">
                         {currency} {it.price}
                       </span>
                     )}
+                    {orderable && <AddToOrder name={it.name} price={it.price} small />}
                   </li>
                 ))}
               </ul>
               <a href={st.href} className="btn btn--line">
-                See {st.title.toLowerCase()}
+                {orderable ? "Order more " + st.title.toLowerCase() : "See " + st.title.toLowerCase()}
               </a>
             </div>
           ))}
