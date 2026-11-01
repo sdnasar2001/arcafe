@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import rawSite from "../content/site.json";
 import MenuNav from "./MenuNav";
 import OpenStatus from "./OpenStatus";
+import Scroll3D from "./Scroll3D";
 import { AddToOrder, OrderBar } from "./Order";
 import { parseHours, hhmm } from "./hours";
 
@@ -41,10 +42,6 @@ const thumbs = (path: string, file: string) => ({
   src: `${COMMONS}${path}/${file}/1280px-${file}`,
   srcSet: [960, 1280, 1920].map((w) => `${COMMONS}${path}/${file}/${w}px-${file} ${w}w`).join(", "),
 });
-const HERO_PHOTO = {
-  ...thumbs("d/df", "Castella_002.jpg"),
-  credit: { name: "Ocdp", href: "https://commons.wikimedia.org/wiki/File:Castella_002.jpg" },
-};
 const BENTO_PHOTO = {
   ...thumbs("0/0f", "Almond_croissant_-_Workshop_Coffee_Lab_2025-06-27.jpg"),
   credit: { name: "Andy Li", href: "https://commons.wikimedia.org/wiki/File:Almond_croissant_-_Workshop_Coffee_Lab_2025-06-27.jpg" },
@@ -71,8 +68,20 @@ export default function Home() {
   const heroLine = introParts[0] || "";
   const aboutLine = introParts.slice(1).join(" ");
 
-  const usesStandInHero = !site.heroImage;
-  const credits = [...(usesStandInHero ? [HERO_PHOTO.credit] : []), BENTO_PHOTO.credit];
+  // The admin page's "Front photo" now fills the About photo; the library stand-in shows until then.
+  const credits = site.heroImage ? [] : [BENTO_PHOTO.credit];
+
+  // One scroll step per menu group, for the 3D front section (tea, tiffin, bakery).
+  const pick = (re: RegExp) => sections.findIndex((sec) => re.test(sec.title));
+  const scrollSteps = [pick(/tea|coffee/i), pick(/tiffin/i), pick(/bakery/i)]
+    .map((i, n) => (i >= 0 ? i : n))
+    .filter((i, n, arr) => i < sections.length && arr.indexOf(i) === n)
+    .map((i) => ({
+      title: sections[i].title,
+      note: sections[i].note,
+      href: "#cat-" + i,
+      items: sections[i].items.filter((it) => it.available).slice(0, 4).map((it) => ({ name: it.name, price: it.price })),
+    }));
 
   const hrs = parseHours(CAFE.hours);
   const siteUrl = "https://sdnasar2001.github.io" + BASE + "/";
@@ -136,10 +145,12 @@ export default function Home() {
         </div>
       )}
 
-      {/* Hero */}
-      <section id="top">
-        <div className="container hero hero__grid">
-          <div>
+      {/* Front section: the AR Cafe logo in 3D, turning as you scroll */}
+      <Scroll3D
+        currency={CAFE.currency}
+        steps={scrollSteps}
+        intro={
+          <>
             <h1>{CAFE.tagline}</h1>
             {heroLine && <p className="lead">{heroLine}</p>}
             <div className="hero__actions">
@@ -151,26 +162,9 @@ export default function Home() {
                 <OpenStatus hours={CAFE.hours} />
               </div>
             )}
-          </div>
-          <div className="hero__media" data-slot="hero" data-alt="Your counter, or a glass of tea beside fresh bakes">
-            {site.heroImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={img(site.heroImage)} alt={CAFE.name} width={1280} height={960} fetchPriority="high" />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={HERO_PHOTO.src}
-                srcSet={HERO_PHOTO.srcSet}
-                sizes="(max-width: 60rem) 100vw, 55vw"
-                alt="A glass of tea beside slices of sponge cake"
-                width={1280}
-                height={850}
-                fetchPriority="high"
-              />
-            )}
-          </div>
-        </div>
-      </section>
+          </>
+        }
+      />
 
       {/* Visit */}
       <section id="visit" className="visit">
@@ -215,8 +209,13 @@ export default function Home() {
             </div>
             <div className="bento">
               <div className="bento__photo" data-slot="photo-1" data-alt="Your shop, or a tray of fresh puffs from the oven">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={BENTO_PHOTO.src} srcSet={BENTO_PHOTO.srcSet} sizes="(max-width: 60rem) 100vw, 55vw" alt="A sugared almond croissant on a cafe table" width={1280} height={964} loading="lazy" />
+                {site.heroImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={img(site.heroImage)} alt={CAFE.name} width={1280} height={960} loading="lazy" />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={BENTO_PHOTO.src} srcSet={BENTO_PHOTO.srcSet} sizes="(max-width: 60rem) 100vw, 55vw" alt="A sugared almond croissant on a cafe table" width={1280} height={964} loading="lazy" />
+                )}
               </div>
               {site.highlights.map((h, i) => (
                 <div key={i} className="tile">
@@ -300,6 +299,7 @@ export default function Home() {
             </ul>
             <p>{CAFE.address}</p>
           </div>
+          {credits.length > 0 && (
           <p className="footer__credits" data-credits>
             Photographs:{" "}
             {credits.map((c, i) => (
@@ -309,6 +309,7 @@ export default function Home() {
               </span>
             ))}
           </p>
+          )}
         </div>
       </footer>
       <div className="orderbar-space" aria-hidden="true" />
