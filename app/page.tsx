@@ -6,6 +6,7 @@ import Ambience from "@/components/Ambience";
 import Anatomy from "@/components/Anatomy";
 import Cart from "@/components/Cart";
 import Chrome from "@/components/Chrome";
+import DishDetail from "@/components/DishDetail";
 import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
 import Gallery from "@/components/Gallery";
@@ -78,6 +79,7 @@ export default function Home() {
         <Visit />
       </main>
       <Footer />
+      <DishDetail />
       <Cart />
     </CartProvider>
   );

@@ -6,6 +6,7 @@ import { Search, X } from "lucide-react";
 import { menu, money, resize, type MenuItem } from "@/lib/site";
 import AddToOrder, { FoodMark } from "./AddToOrder";
 import Monogram from "./Monogram";
+import { DishButton } from "./DishDetail";
 import { Reveal, SplitHeading } from "./Reveal";
 
 type Diet = "all" | "veg" | "nonveg";
@@ -160,7 +161,7 @@ function Card({ item }: { item: MenuItem }) {
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={`group relative flex flex-col border border-gold/15 bg-coal transition-[border-color,transform,box-shadow] duration-500 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[0_30px_60px_-30px_rgba(214,180,119,.35)] ${item.available ? "" : "opacity-60"}`}
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-coal-2">
+      <DishButton item={item} className="relative aspect-[4/3] overflow-hidden bg-coal-2">
         {item.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -179,10 +180,14 @@ function Card({ item }: { item: MenuItem }) {
         <div className="absolute inset-0 bg-gradient-to-t from-coal via-transparent to-transparent" />
         <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_30%,rgba(241,223,182,.18)_50%,transparent_70%)] bg-[length:250%_100%] bg-[position:120%_0] transition-[background-position] duration-[1.2s] group-hover:bg-[position:-20%_0]" />
         <FoodMark type={item.type} className="absolute left-3 top-3" />
-      </div>
+      </DishButton>
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-3">
-          <h4 className="font-display text-2xl leading-tight text-ivory">{item.name}</h4>
+          <h4 className="font-display text-2xl leading-tight text-ivory">
+            <DishButton item={item} className="transition-colors hover:text-gold">
+              {item.name}
+            </DishButton>
+          </h4>
           <p className="shrink-0 pt-1 font-display text-2xl text-gold">{item.price !== null ? money(item.price) : ""}</p>
         </div>
         <p className="mt-2 text-sm leading-relaxed text-mist">{item.description}</p>
