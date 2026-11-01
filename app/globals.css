@@ -178,6 +178,10 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
+/* ---------- Classical gold lattice (quatrefoils in a diamond trellis) ---------- */
+:root { --pattern-classic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23D6B477' stroke-opacity='.17' stroke-width='.8'%3E%3Cpath d='M0 48L48 0L96 48L48 96Z M43 43A5 5 0 0 1 53 43A5 5 0 0 1 53 53A5 5 0 0 1 43 53A5 5 0 0 1 43 43Z M48 33L63 48L48 63L33 48Z M-5 -5A5 5 0 0 1 5 -5A5 5 0 0 1 5 5A5 5 0 0 1 -5 5A5 5 0 0 1 -5 -5Z M0 -15L15 0L0 15L-15 0Z M91 -5A5 5 0 0 1 101 -5A5 5 0 0 1 101 5A5 5 0 0 1 91 5A5 5 0 0 1 91 -5Z M96 -15L111 0L96 15L81 0Z M-5 91A5 5 0 0 1 5 91A5 5 0 0 1 5 101A5 5 0 0 1 -5 101A5 5 0 0 1 -5 91Z M0 81L15 96L0 111L-15 96Z M91 91A5 5 0 0 1 101 91A5 5 0 0 1 101 101A5 5 0 0 1 91 101A5 5 0 0 1 91 91Z M96 81L111 96L96 111L81 96Z'/%3E%3C/g%3E%3Cg fill='%23D6B477' fill-opacity='.3'%3E%3Ccircle cx='48' cy='0' r='1.6'/%3E%3Ccircle cx='96' cy='48' r='1.6'/%3E%3Ccircle cx='48' cy='96' r='1.6'/%3E%3Ccircle cx='0' cy='48' r='1.6'/%3E%3C/g%3E%3C/svg%3E"); }
+.bg-classic { background-image: var(--pattern-classic); background-size: 96px 96px; background-position: center top; }
+
 /* Opening sequence light sweep */
 @keyframes sweep { from { transform: translateX(-120%) skewX(-18deg); } to { transform: translateX(220%) skewX(-18deg); } }
 @keyframes cue { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(8px); opacity: 1; } }

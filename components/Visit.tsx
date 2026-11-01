@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionOrnament } from "./Ornament";
 import { useEffect, useState } from "react";
 import { Clock, MapPin, MessageCircle, Navigation, Phone } from "lucide-react";
 import { brand } from "@/content/brand";
@@ -30,7 +31,8 @@ export default function Visit() {
   const [mapOn, setMapOn] = useState(false);
 
   return (
-    <section id="visit" className="relative z-10 bg-coal py-28 md:py-36">
+    <section id="visit" className="bg-classic relative z-10 bg-coal py-28 md:py-36">
+      <SectionOrnament />
       <div className="container-lux grid gap-14 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-5">
           <Reveal>

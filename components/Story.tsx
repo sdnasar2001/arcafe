@@ -65,7 +65,7 @@ export default function Story() {
       </div>
 
       {photo && (
-        <div ref={band} className="relative bg-ink pb-24">
+        <div ref={band} className="bg-classic relative bg-ink pb-24">
           <div data-band className="relative mx-auto aspect-[4/5] w-full overflow-hidden sm:aspect-[21/9]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img data-band-img onError={hideBroken} src={photo} alt={`At ${cafe.name}`} loading="lazy" decoding="async" className="h-full w-full object-cover" />

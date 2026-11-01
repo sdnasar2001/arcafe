@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionOrnament } from "./Ornament";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, X } from "lucide-react";
@@ -42,7 +43,8 @@ export default function Menu() {
   const hasNonVeg = menu.some((s) => s.items.some((i) => i.type === "nonveg"));
 
   return (
-    <section id="menu" className="relative z-10 bg-ink pb-28 pt-28 md:pt-36">
+    <section id="menu" className="bg-classic relative z-10 bg-ink pb-28 pt-28 md:pt-36">
+      <SectionOrnament />
       <div className="container-lux">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionOrnament } from "./Ornament";
 import { MapPin, MessageCircle, Star } from "lucide-react";
 import { reviews } from "@/content/brand";
 import { cafe, mapsSearchUrl, whatsappLink, whatsappReady } from "@/lib/site";
@@ -14,7 +15,8 @@ export default function Reviews() {
   const avg = rated.length ? rated.reduce((a, r) => a + (r.rating || 0), 0) / rated.length : null;
 
   return (
-    <section id="reviews" className="relative z-10 overflow-hidden bg-ink py-28 md:py-36">
+    <section id="reviews" className="bg-classic relative z-10 overflow-hidden bg-ink py-28 md:py-36">
+      <SectionOrnament inside />
       <div aria-hidden className="pointer-events-none absolute left-1/2 top-0 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(214,180,119,.12),transparent_60%)]" />
       <div className="container-lux relative">
         <div className="mx-auto max-w-3xl text-center">

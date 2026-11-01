@@ -89,6 +89,8 @@ export default function Experience() {
           <Monogram className="relative mt-[28vh] w-[28vmin] opacity-30" />
         </div>
       )}
+      {/* classical gold lattice, strongest at the edges so the cup stays clean */}
+      <div className="bg-classic absolute inset-0 [mask-image:radial-gradient(ellipse_48%_42%_at_50%_62%,transparent_40%,#000_95%)]" />
       {/* vignette keeps type readable over the scene */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(16,26,43,.55)_100%)]" />
     </div>

@@ -62,7 +62,7 @@ export default function Intro() {
 
   if (gone) return null;
   return (
-    <div ref={root} className="fixed inset-0 z-[100] grid place-items-center overflow-hidden bg-ink" role="status" aria-label="Loading AR Cafe">
+    <div ref={root} className="bg-classic fixed inset-0 z-[100] grid place-items-center overflow-hidden bg-ink" role="status" aria-label="Loading AR Cafe">
       <div
         ref={light}
         className="pointer-events-none absolute inset-y-0 left-0 w-[45vw] opacity-0"

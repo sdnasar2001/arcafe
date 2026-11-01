@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionOrnament } from "./Ornament";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -46,7 +47,8 @@ export default function Ambience() {
   }, []);
 
   return (
-    <section ref={root} id="ambience" className="relative z-10 bg-ink py-28 md:py-36">
+    <section ref={root} id="ambience" className="bg-classic relative z-10 bg-ink py-28 md:py-36">
+      <SectionOrnament />
       <div className="container-lux">
         <div className="mb-14 grid gap-6 md:grid-cols-2 md:items-end">
           <div>

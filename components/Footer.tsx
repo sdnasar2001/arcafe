@@ -1,4 +1,5 @@
 import { brand } from "@/content/brand";
+import { SectionOrnament } from "./Ornament";
 import { cafe, directionsUrl, whatsappLink, whatsappReady } from "@/lib/site";
 import { NAV_LINKS } from "@/lib/nav";
 import Logo from "./Logo";
@@ -7,7 +8,8 @@ import Logo from "./Logo";
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="relative z-10 overflow-hidden border-t border-gold/20 bg-ink pt-20">
+    <footer className="bg-classic relative z-10 overflow-hidden border-t border-gold/20 bg-ink pt-28">
+      <SectionOrnament inside />
       <div className="container-lux grid gap-12 pb-16 md:grid-cols-12">
         <div className="md:col-span-5">
           <Logo size={512} alt="AR Cafe" className="w-32" />

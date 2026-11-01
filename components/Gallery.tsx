@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionOrnament } from "./Ornament";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Camera, X } from "lucide-react";
@@ -28,7 +29,8 @@ export default function Gallery() {
   const current = open !== null ? shots[open] : null;
 
   return (
-    <section id="gallery" className="relative z-10 bg-coal py-28 md:py-36">
+    <section id="gallery" className="bg-classic relative z-10 bg-coal py-28 md:py-36">
+      <SectionOrnament />
       <div className="container-lux">
         <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
