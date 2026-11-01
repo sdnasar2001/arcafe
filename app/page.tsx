@@ -3,7 +3,7 @@ import rawSite from "../content/site.json";
 import MenuNav from "./MenuNav";
 import OpenStatus from "./OpenStatus";
 import Scroll3D from "./Scroll3D";
-import { AddToOrder, OrderBar, OrderButton } from "./Order";
+import { AddToOrder, OrderBar, OrderButton, OrderPanel } from "./Order";
 import { parseHours, hhmm } from "./hours";
 
 // All content comes from content/site.json - edit it from the admin page (/admin/).
@@ -192,7 +192,7 @@ export default function Home() {
               <li><strong>Collect</strong> it fresh at the counter</li>
             </ol>
           )}
-          <div className="menu__layout">
+          <div className={"menu__layout" + (hasPhone ? " menu__layout--order" : "")}>
             <MenuNav titles={sections.map((sec) => sec.title)} />
             <div className="menu__list">
               {sections.map((section, si) => (
@@ -225,6 +225,7 @@ export default function Home() {
                 </article>
               ))}
             </div>
+            <OrderPanel phone={hasPhone ? CAFE.phone : ""} currency={CAFE.currency} cafe={CAFE.name} />
           </div>
         </div>
       </section>
