@@ -21,7 +21,7 @@
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 18px; }
   .card h2 { font-size: 17px; margin: 0 0 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin: 10px 0 4px; }
-  input[type=text], input[type=password], textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; color: var(--ink); background: #fff; }
+  input[type=text], input[type=password], textarea, select { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; color: var(--ink); background: #fff; }
   textarea { min-height: 70px; resize: vertical; }
   input:focus, textarea:focus { outline: 2px solid var(--brand-2); outline-offset: 0; border-color: transparent; }
   .grid2 { display: grid; gap: 0 14px; grid-template-columns: 1fr; }
@@ -215,7 +215,7 @@
   function str(v) { return v == null ? "" : String(v); }
   function normItem(i) {
     i = i || {};
-    return { name: str(i.name), description: str(i.description), price: str(i.price), image: str(i.image), available: i.available !== false };
+    return { name: str(i.name), description: str(i.description), price: str(i.price), image: str(i.image), type: (i.type === "veg" || i.type === "nonveg") ? i.type : "", available: i.available !== false };
   }
   function normalize(s) {
     s = s || {};
@@ -333,6 +333,11 @@
               '<div><label>Item name</label><input type="text" data-bind="' + p + '.name" value="' + esc(it.name) + '"></div>' +
               '<div><label>Price (' + esc(state.cafe.currency || "") + ')</label><input type="text" data-bind="' + p + '.price" value="' + esc(it.price) + '" placeholder="e.g. 20" inputmode="decimal"></div>' +
               '<div class="full"><label>Description</label><input type="text" data-bind="' + p + '.description" value="' + esc(it.description) + '"></div>' +
+              '<div><label>Food type</label><select data-bind="' + p + '.type">' +
+                '<option value=""' + (it.type ? "" : " selected") + '>Not marked</option>' +
+                '<option value="veg"' + (it.type === "veg" ? " selected" : "") + '>Vegetarian (green mark)</option>' +
+                '<option value="nonveg"' + (it.type === "nonveg" ? " selected" : "") + '>Non-vegetarian (brown mark)</option>' +
+              '</select></div>' +
             '</div>' +
             '<div class="item-actions" style="margin-top:8px">' +
               '<label class="check"><input type="checkbox" data-bind="' + p + '.available"' + (it.available ? " checked" : "") + '> Available</label>' +

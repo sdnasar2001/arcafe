@@ -33,21 +33,24 @@
           "description": "Strong, milky and just right",
           "price": "15",
           "image": "https://images.unsplash.com/photo-1633536704822-c994d54c75b5?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": "veg"
         },
         {
           "name": "Coffee",
           "description": "Hot and freshly made",
           "price": "15",
           "image": "https://images.unsplash.com/photo-1668236482744-b48b28650f12?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": "veg"
         },
         {
           "name": "Special teas",
           "description": "Different tea varieties - ask what is brewing today",
           "price": "18",
           "image": "https://images.unsplash.com/photo-1753719056010-314f9d2b190d?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": "veg"
         }
       ]
     },
@@ -60,28 +63,32 @@
           "description": "Soft and fluffy, served hot",
           "price": "10",
           "image": "https://images.unsplash.com/photo-1741376509047-66dae5df90f9?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": "veg"
         },
         {
           "name": "Dosa",
           "description": "Crisp and golden",
           "price": "20",
           "image": "https://images.unsplash.com/photo-1694849789325-914b71ab4075?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": "veg"
         },
         {
           "name": "Vada",
           "description": "Crunchy outside, soft inside",
           "price": "10",
           "image": "https://images.unsplash.com/photo-1730191843435-073792ba22bc?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": "veg"
         },
         {
           "name": "Samosa",
           "description": "Spiced and freshly fried",
           "price": "10",
           "image": "https://images.unsplash.com/photo-1747008624832-e068ee496908?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": "veg"
         }
       ]
     },
@@ -94,14 +101,16 @@
           "description": "Home-style rice dishes",
           "price": "",
           "image": "",
-          "available": true
+          "available": true,
+          "type": ""
         },
         {
           "name": "Pasta",
           "description": "A quick and filling favourite",
           "price": "",
           "image": "",
-          "available": true
+          "available": true,
+          "type": ""
         }
       ]
     },
@@ -110,39 +119,52 @@
       "note": "From our counter",
       "items": [
         {
-          "name": "Veg / egg puffs",
+          "name": "Veg puff",
           "description": "Flaky, hot and fresh from the oven",
           "price": "",
           "image": "",
-          "available": true
+          "available": true,
+          "type": "veg"
+        },
+        {
+          "name": "Egg puff",
+          "description": "Flaky pastry with a spiced egg filling",
+          "price": "",
+          "image": "",
+          "available": true,
+          "type": "nonveg"
         },
         {
           "name": "Cakes & pastries",
           "description": "Slices and pastries for every sweet tooth",
           "price": "",
           "image": "https://images.unsplash.com/photo-1748712869489-95dce7262348?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": ""
         },
         {
           "name": "Buns & bread",
           "description": "Soft buns and fresh bread daily",
           "price": "",
           "image": "https://images.unsplash.com/photo-1618662320780-d372ccc13cf2?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": ""
         },
         {
           "name": "Cookies & biscuits",
           "description": "Crunchy bites to go with your tea",
           "price": "",
           "image": "https://images.unsplash.com/photo-1601316374308-50067f1004e8?w=400&h=400&fit=crop&q=75&auto=format",
-          "available": true
+          "available": true,
+          "type": ""
         },
         {
           "name": "Take-away",
           "description": "Pack some for home or the road",
           "price": "",
           "image": "",
-          "available": false
+          "available": false,
+          "type": ""
         }
       ]
     }
