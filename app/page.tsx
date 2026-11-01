@@ -81,7 +81,7 @@ export default function Home() {
       title: sections[i].title,
       note: sections[i].note,
       href: "#cat-" + i,
-      items: sections[i].items.filter((it) => it.available).slice(0, 4).map((it) => ({ name: it.name, price: it.price })),
+      items: sections[i].items.filter((it) => it.available).slice(0, 4).map((it) => ({ name: it.name, price: it.price, image: it.image ? img(it.image) : "" })),
     }));
 
   const hrs = parseHours(CAFE.hours);

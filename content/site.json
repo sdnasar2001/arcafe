@@ -32,21 +32,21 @@
           "name": "Tea",
           "description": "Strong, milky and just right",
           "price": "15",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1633536704822-c994d54c75b5?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         },
         {
           "name": "Coffee",
           "description": "Hot and freshly made",
           "price": "15",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1668236482744-b48b28650f12?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         },
         {
           "name": "Special teas",
           "description": "Different tea varieties - ask what is brewing today",
           "price": "18",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1753719056010-314f9d2b190d?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         }
       ]
@@ -59,28 +59,28 @@
           "name": "Idli",
           "description": "Soft and fluffy, served hot",
           "price": "10",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1741376509047-66dae5df90f9?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         },
         {
           "name": "Dosa",
           "description": "Crisp and golden",
           "price": "20",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1694849789325-914b71ab4075?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         },
         {
           "name": "Vada",
           "description": "Crunchy outside, soft inside",
           "price": "10",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1730191843435-073792ba22bc?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         },
         {
           "name": "Samosa",
           "description": "Spiced and freshly fried",
           "price": "10",
-          "image": "",
+          "image": "https://images.unsplash.com/photo-1747008624832-e068ee496908?w=400&h=400&fit=crop&q=75&auto=format",
           "available": true
         }
       ]

@@ -8,7 +8,7 @@ import { AddToOrder } from "./Order";
 // per menu group. Each orbit ring stands for one group and lights up when its panel shows.
 // Without JavaScript, or with reduced motion, the panels simply sit one under another.
 
-export type Step = { title: string; note: string; items: { name: string; price: string }[]; href: string };
+export type Step = { title: string; note: string; items: { name: string; price: string; image?: string }[]; href: string };
 
 const RING_COLOURS = [0xc2410c, 0x0f766e, 0x9d174d]; // tea, tiffin, bakery (the logo's orbits)
 
@@ -278,6 +278,12 @@ export default function Scroll3D({ intro, steps, currency, orderable }: { intro:
               <ul className="scrolly__items">
                 {st.items.map((it, n) => (
                   <li key={it.name} style={{ "--i": n } as CSSProperties}>
+                    {it.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img className="scrolly__thumb" src={it.image} alt="" width={56} height={56} loading="lazy" />
+                    ) : (
+                      <span className="scrolly__thumb scrolly__thumb--none" aria-hidden="true" />
+                    )}
                     <span className="scrolly__name">{it.name}</span>
                     {it.price && (
                       <span className="scrolly__price">
