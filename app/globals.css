@@ -270,14 +270,14 @@ body {
 .scrolly--on .scrolly__panel {
   grid-area: 1 / 1;
   align-self: center;
-  opacity: 0;
-  transform: translateY(var(--space-md));
-  transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out);
+  will-change: transform, opacity;
 }
-.scrolly--on[data-active="0"] .scrolly__panel[data-step="0"],
-.scrolly--on[data-active="1"] .scrolly__panel[data-step="1"],
-.scrolly--on[data-active="2"] .scrolly__panel[data-step="2"],
-.scrolly--on[data-active="3"] .scrolly__panel[data-step="3"] { opacity: 1; transform: none; }
+/* the price rows trail the heading a little as a panel slides in */
+.scrolly--on .scrolly__items li,
+.scrolly--on .scrolly__panel .btn {
+  transform: translate3d(0, calc(var(--enter, 0) * (24px + var(--i, 4) * 14px)), 0);
+  opacity: calc(1 - var(--enter, 0) * 0.6);
+}
 
 @media (max-width: 60rem) {
   .scrolly__pin { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }

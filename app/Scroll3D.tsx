@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 // A scroll story: the AR Cafe logo in 3D (a golden coffee bean inside three orbit rings).
 // The section is pinned while you scroll through four panels: the intro, then one panel
@@ -28,21 +28,37 @@ export default function Scroll3D({ intro, steps, currency }: { intro: ReactNode;
     const stepCount = panels.length;
 
     let progress = 0;
-    let active = -1;
-    const setActive = (i: number) => {
-      if (i === active) return;
-      active = i;
-      sec.dataset.active = String(i);
-      panels.forEach((p, n) => {
-        if (n === i) p.removeAttribute("inert");
-        else p.setAttribute("inert", "");
+    // Each panel owns one slice of the scroll. Its text slides in from below during the
+    // first fifth of the slice and slides out upwards during the last fifth, so the words
+    // move with your finger instead of switching.
+    const clamp = (v: number) => Math.min(1, Math.max(0, v));
+    const updatePanels = () => {
+      const f = progress * stepCount;
+      panels.forEach((panel, i) => {
+        const local = f - i;
+        const enter = i === 0 ? 0 : clamp((0.2 - local) / 0.2);
+        const leave = i === stepCount - 1 ? 0 : clamp((local - 0.8) / 0.2);
+        const opacity = (1 - enter) * (1 - leave);
+        panel.style.opacity = opacity.toFixed(3);
+        panel.style.transform = `translate3d(0, ${(enter * 56 - leave * 56).toFixed(1)}px, 0)`;
+        panel.style.setProperty("--enter", enter.toFixed(3));
+        panel.style.visibility = opacity < 0.01 ? "hidden" : "visible";
+        if (opacity > 0.5) panel.removeAttribute("inert");
+        else panel.setAttribute("inert", "");
       });
+      sec.dataset.active = String(Math.min(stepCount - 1, Math.floor(f)));
     };
+    let ticking = false;
     const readScroll = () => {
-      const r = sec.getBoundingClientRect();
-      const run = Math.max(1, r.height - window.innerHeight);
-      progress = Math.min(1, Math.max(0, -r.top / run));
-      setActive(Math.min(stepCount - 1, Math.floor(progress * stepCount)));
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const r = sec.getBoundingClientRect();
+        const run = Math.max(1, r.height - window.innerHeight);
+        progress = clamp(-r.top / run);
+        updatePanels();
+      });
     };
     if (!reduced) {
       readScroll();
@@ -244,8 +260,8 @@ export default function Scroll3D({ intro, steps, currency }: { intro: ReactNode;
               <h2>{st.title}</h2>
               <p className="lead scrolly__note">{st.note}</p>
               <ul className="scrolly__items">
-                {st.items.map((it) => (
-                  <li key={it.name}>
+                {st.items.map((it, n) => (
+                  <li key={it.name} style={{ "--i": n } as CSSProperties}>
                     <span>{it.name}</span>
                     {it.price && (
                       <span className="scrolly__price">
