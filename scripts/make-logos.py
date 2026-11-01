@@ -20,7 +20,7 @@ FONT_DIR = ROOT / "node_modules" / "@fontsource" / "cormorant-garamond" / "files
 
 GOLD = "#D6B477"
 WHITE = "#F5F0E6"
-BLACK = "#090909"
+BLACK = "#1C2B45"  # logo navy, the site background
 
 # ---------------------------------------------------------------------------
 # The AR monogram, drawn on a 120 x 120 grid.
@@ -184,8 +184,8 @@ def main():
     # Social share picture (1200 x 630): primary logo on deep black with a soft gold glow.
     og = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">'
-        '<defs><radialGradient id="glow" cx=".5" cy=".45" r=".55"><stop offset="0" stop-color="#2a2318"/>'
-        '<stop offset="1" stop-color="#090909"/></radialGradient></defs>'
+        '<defs><radialGradient id="glow" cx=".5" cy=".45" r=".55"><stop offset="0" stop-color="#2a3d5f"/>'
+        '<stop offset="1" stop-color="#1C2B45"/></radialGradient></defs>'
         '<rect width="1200" height="630" fill="url(#glow)"/>'
         '<rect x="28" y="28" width="1144" height="574" fill="none" stroke="#80633D" stroke-width="1"/>'
         f'<g transform="translate({600 - W * 1.55 / 2:.1f} 78) scale(1.55)">'
@@ -202,7 +202,7 @@ def main():
         try:
             from PIL import Image, ImageDraw, ImageFilter
 
-            card = Image.new("RGBA", (1200, 630), (9, 9, 9, 255))
+            card = Image.new("RGBA", (1200, 630), (28, 43, 69, 255))
             glow = Image.new("L", (1200, 630), 0)
             ImageDraw.Draw(glow).ellipse((300, -40, 900, 560), fill=90)
             glow = glow.filter(ImageFilter.GaussianBlur(90))

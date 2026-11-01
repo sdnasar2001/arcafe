@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
-/* AR CAFE — black & champagne gold. Colours mirror content/brand.ts. */
+/* AR CAFE — logo navy & champagne gold. Colours mirror content/brand.ts. */
 @theme {
-  --color-ink: #090909;
-  --color-coal: #141414;
-  --color-coal-2: #1b1a18;
+  --color-ink: #1c2b45;
+  --color-coal: #223352;
+  --color-coal-2: #2a3d5f;
   --color-gold: #d6b477;
   --color-gold-hi: #f1dfb6;
   --color-bronze: #80633d;
   --color-ivory: #f5f0e6;
-  --color-mist: #b9b1a3;
+  --color-mist: #c3c4c6;
   --color-veg: #2e8b47;
   --color-nonveg: #8b3a1e;
 

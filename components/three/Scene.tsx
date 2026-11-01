@@ -37,8 +37,8 @@ export default function Scene({ mobile, reduced, active }: Props) {
       camera={{ fov: 35, near: 0.1, far: 60, position: [0, 1.2, 6.2] }}
       gl={{ antialias: !mobile, powerPreference: "high-performance", alpha: false }}
       onCreated={({ gl, scene }) => {
-        gl.setClearColor("#090909");
-        scene.fog = new THREE.Fog("#090909", 9, 22);
+        gl.setClearColor("#1c2b45");
+        scene.fog = new THREE.Fog("#1c2b45", 9, 22);
       }}
     >
       <Environment />

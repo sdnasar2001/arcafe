@@ -173,7 +173,7 @@ function Card({ item }: { item: MenuItem }) {
             className="h-full w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-110"
           />
         ) : (
-          <div className="grid h-full w-full place-items-center bg-[radial-gradient(circle_at_50%_40%,#22201c,#111)]">
+          <div className="grid h-full w-full place-items-center bg-[radial-gradient(circle_at_50%_40%,#2f4366,#1f2f4c)]">
             <Monogram className="h-14 w-auto opacity-25" />
           </div>
         )}

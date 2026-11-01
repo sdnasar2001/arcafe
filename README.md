@@ -1,6 +1,6 @@
 # AR CAFE — Crafted for the craving.
 
-The website of AR Cafe, Revu Main Road, Parangi Pettai: a black-and-champagne-gold site with a
+The website of AR Cafe, Revu Main Road, Parangi Pettai: a logo-navy and champagne-gold site with a
 3D cup that travels with the page as you scroll, a full menu with vegetarian / non-vegetarian
 filters, and an order basket that sends the order to the cafe on WhatsApp.
 

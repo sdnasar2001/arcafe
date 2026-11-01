@@ -16,8 +16,8 @@ export const brand = {
   heroLine: "Discover an extraordinary food experience.",
 
   colors: {
-    black: "#090909",
-    charcoal: "#141414",
+    navy: "#1C2B45", // page background (matches the logo)
+    navyLight: "#223352", // alternate sections
     gold: "#D6B477",
     bronze: "#80633D",
     ivory: "#F5F0E6",

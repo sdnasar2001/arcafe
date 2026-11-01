@@ -90,7 +90,7 @@ export default function Experience() {
         </div>
       )}
       {/* vignette keeps type readable over the scene */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(9,9,9,.7)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(16,26,43,.55)_100%)]" />
     </div>
   );
 }

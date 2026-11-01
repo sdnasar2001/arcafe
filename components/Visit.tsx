@@ -104,7 +104,7 @@ export default function Visit() {
               />
             ) : (
               // The map loads only when asked for: keeps the page fast and Google out until needed.
-              <button type="button" onClick={() => setMapOn(true)} className="group absolute inset-0 grid place-items-center bg-[radial-gradient(circle_at_50%_45%,#1f1c17,#0b0b0b_70%)]">
+              <button type="button" onClick={() => setMapOn(true)} className="group absolute inset-0 grid place-items-center bg-[radial-gradient(circle_at_50%_45%,#2a3d5f,#18253d_70%)]">
                 <span aria-hidden className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(#d6b477_1px,transparent_1px),linear-gradient(90deg,#d6b477_1px,transparent_1px)] [background-size:48px_48px]" />
                 <span className="relative flex flex-col items-center gap-4">
                   <span className="grid h-16 w-16 place-items-center rounded-full border border-gold/50 text-gold transition-transform duration-500 group-hover:scale-110">

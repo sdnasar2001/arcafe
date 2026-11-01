@@ -72,7 +72,7 @@ export default function Ambience() {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={asset(a.image)} onError={hideBroken} alt={a.title} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-[1.6s] group-hover:scale-105" />
                   ) : (
-                    <div className="grain relative h-full w-full bg-[radial-gradient(120%_90%_at_30%_20%,#26221c_0%,#141414_55%,#0b0b0b_100%)]">
+                    <div className="grain relative h-full w-full bg-[radial-gradient(120%_90%_at_30%_20%,#2f4366_0%,#223352_55%,#18253d_100%)]">
                       <Monogram fill="#d6b477" className="absolute right-[12%] top-[40%] h-[34%] max-h-56 w-auto -translate-y-1/2 opacity-[0.07]" />
                     </div>
                   )}
