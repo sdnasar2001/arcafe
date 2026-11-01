@@ -26,7 +26,7 @@ const jsonLd = {
   name: cafe.name,
   slogan: brand.tagline,
   url: seo.siteUrl + "/",
-  logo: seo.siteUrl + "/brand/ar-cafe-social-square-black.svg",
+  logo: seo.siteUrl + "/brand/ar-cafe-logo.png",
   image: seo.siteUrl + "/og.png",
   description: seo.description,
   servesCuisine: ["South Indian", "Tea", "Coffee", "Bakery"],

@@ -1,6 +1,7 @@
 import { brand } from "@/content/brand";
-import { BASE, cafe, directionsUrl, whatsappLink, whatsappReady } from "@/lib/site";
+import { cafe, directionsUrl, whatsappLink, whatsappReady } from "@/lib/site";
 import { NAV_LINKS } from "@/lib/nav";
+import Logo from "./Logo";
 
 /** SECTION J — footer. */
 export default function Footer() {
@@ -9,8 +10,7 @@ export default function Footer() {
     <footer className="relative z-10 overflow-hidden border-t border-gold/20 bg-ink pt-20">
       <div className="container-lux grid gap-12 pb-16 md:grid-cols-12">
         <div className="md:col-span-5">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={BASE + "/brand/ar-cafe-logo-horizontal.svg"} alt="AR Cafe" width={300} height={67} className="h-auto w-64" loading="lazy" />
+          <Logo size={512} alt="AR Cafe" className="w-32" />
           <p className="mt-6 font-display text-2xl italic text-ivory/80">{brand.tagline}</p>
         </div>
 

@@ -102,13 +102,13 @@ function Lights({ mobile }: { mobile: boolean }) {
 
 type Pose = { cup: [number, number, number]; scale: number; cam: [number, number, number]; look: [number, number, number] };
 const DESKTOP: Pose[] = [
-  { cup: [0, -1.15, 0], scale: 0.86, cam: [0, 1.3, 6.8], look: [0, 0.55, 0] }, // hero
+  { cup: [0, -1.2, 0], scale: 0.84, cam: [0, 1.35, 6.8], look: [0, 0.8, 0] }, // hero
   { cup: [2.35, -0.75, 0], scale: 0.8, cam: [-1.1, 2.3, 6.2], look: [0.65, 0, 0] }, // story
   { cup: [-2.0, -0.85, 0], scale: 1.0, cam: [1.2, 0.95, 6.0], look: [-0.6, 0, 0] }, // signature
   { cup: [0, -0.35, 0], scale: 0.72, cam: [0, 0.75, 7.4], look: [0, 0.65, 0] }, // anatomy
 ];
 const MOBILE: Pose[] = [
-  { cup: [0, -1.15, 0], scale: 0.8, cam: [0, 1.3, 7.6], look: [0, 0.6, 0] },
+  { cup: [0, -1.25, 0], scale: 0.74, cam: [0, 1.4, 7.8], look: [0, 1.15, 0] },
   { cup: [0, -0.35, 0], scale: 0.72, cam: [-1.0, 2.4, 7.4], look: [0, 0, 0] },
   { cup: [0, -0.4, 0], scale: 0.82, cam: [1.0, 1.0, 7.2], look: [0, 0.1, 0] },
   { cup: [0, 0.35, 0], scale: 0.68, cam: [0, 0.9, 8.6], look: [0, 0.9, 0] },

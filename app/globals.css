@@ -58,7 +58,7 @@
     background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
     vertical-align: middle;
   }
-  .display-xl { font-size: clamp(3.4rem, 11vw, 10.5rem); letter-spacing: 0.14em; line-height: 0.9; }
+  .display-xl { font-size: clamp(3rem, 9vw, 8.25rem); letter-spacing: 0.14em; line-height: 0.9; }
   .display-lg { font-size: clamp(2.6rem, 6.4vw, 5.6rem); letter-spacing: 0.01em; }
   .display-md { font-size: clamp(2rem, 4vw, 3.4rem); }
   .gold-text {

@@ -7,6 +7,7 @@ import { ArrowDown, MessageCircle } from "lucide-react";
 import { brand } from "@/content/brand";
 import { cafe, whatsappLink, whatsappReady } from "@/lib/site";
 import { onIntroDone } from "@/lib/journey";
+import Logo from "./Logo";
 
 /** SECTION A — the first screen. The cup itself lives in the fixed 3D layer behind. */
 export default function Hero() {
@@ -43,9 +44,12 @@ export default function Hero() {
 
   const title = "AR CAFE";
   return (
-    <section ref={root} id="top" className="relative z-10 flex min-h-[100svh] flex-col items-center px-4 pb-10 pt-28 text-center md:pt-32">
+    <section ref={root} id="top" className="relative z-10 flex min-h-[100svh] flex-col items-center px-4 pb-10 pt-24 text-center md:pt-24">
       <div data-hero-copy className="flex flex-col items-center">
-        <p data-fade className="eyebrow mb-6 flex items-center gap-4">
+        <div data-fade className="mb-5">
+          <Logo eager size={512} alt="AR Cafe logo" className="w-24 drop-shadow-[0_10px_30px_rgba(214,180,119,.25)] md:w-28" />
+        </div>
+        <p data-fade className="eyebrow mb-4 flex items-center gap-4">
           <span className="rule" /> {cafe.address} <span className="rule" />
         </p>
         <h1 className="display-xl pl-[0.14em]" aria-label={title}>

@@ -75,7 +75,13 @@ quotes or star ratings are shown.
 
 ### Logos
 
-`public/brand/` holds the logo family as vector SVGs with transparent backgrounds:
+**Main logo:** the navy-and-gold AR Cafe badge — `public/brand/ar-cafe-logo.png` (1024 px,
+transparent), with smaller `.webp` copies used on the site, plus the browser-tab icons
+`app/icon.png` and `app/apple-icon.png`. It appears in the opening sequence, the header, the
+first screen, the footer and the share picture (`public/og.png`). To swap it, replace those
+files with the same names and sizes.
+
+`public/brand/` also holds an alternative logo family as vector SVGs with transparent backgrounds:
 
 | File | Use |
 |---|---|

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu as MenuIcon, ShoppingBag, X } from "lucide-react";
 import { useCart } from "@/lib/cart";
-import Monogram from "./Monogram";
+import Logo from "./Logo";
 import { NAV_LINKS } from "@/lib/nav";
 
 
@@ -40,7 +40,7 @@ export default function Nav() {
       >
         <nav className="container-lux flex h-16 items-center justify-between gap-6 md:h-20" aria-label="Main">
           <a href="#top" className="group flex items-center gap-3" aria-label="AR Cafe — back to the top">
-            <Monogram className="h-8 w-auto transition-transform duration-700 group-hover:scale-105 md:h-9" />
+            <Logo alt="" eager className="h-11 w-11 transition-transform duration-700 group-hover:scale-105 md:h-14 md:w-14" />
             <span className="hidden font-display text-lg tracking-[0.42em] text-ivory sm:inline">AR CAFE</span>
           </a>
 
@@ -96,7 +96,7 @@ export default function Nav() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="container-lux flex h-16 items-center justify-between">
-              <Monogram className="h-8 w-auto" />
+              <Logo alt="AR Cafe" className="h-11 w-11" />
               <button type="button" onClick={() => setOpen(false)} className="inline-flex h-11 w-11 items-center justify-center border border-gold/40" aria-label="Close menu">
                 <X size={18} strokeWidth={1.5} />
               </button>

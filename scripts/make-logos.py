@@ -3,7 +3,7 @@
 Run from the project folder after `npm install`:
     python3 scripts/make-logos.py
 
-Writes to public/brand/ and app/icon.svg. Needs Python 3 with fontTools (pip install fonttools).
+Writes to public/brand/ and public/og.png. Needs Python 3 with fontTools (pip install fonttools).
 The wordmark uses Cormorant Garamond (SIL Open Font License), read from node_modules/@fontsource.
 """
 import shutil
@@ -180,7 +180,7 @@ def main():
         + gold_defs("g")
         + f'<g fill="url(#g)">{monogram_group(10.5, 12, 40)}</g></svg>\n'
     )
-    (ROOT / "app" / "icon.svg").write_text(icon, encoding="utf-8")
+    (OUT / "ar-monogram-icon.svg").write_text(icon, encoding="utf-8")  # the site icon itself is app/icon.png (the badge logo)
     # Social share picture (1200 x 630): primary logo on deep black with a soft gold glow.
     og = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">'
@@ -196,7 +196,24 @@ def main():
     og_svg.write_text(og, encoding="utf-8")
     if shutil.which("rsvg-convert"):
         subprocess.run(["rsvg-convert", "-w", "1200", "-h", "630", str(og_svg), "-o", str(ROOT / "public" / "og.png")], check=True)
-    print("wrote", ", ".join(files), "+ og-image.svg, og.png, app/icon.svg")
+    # If the cafe's own badge logo is present, the share picture uses it instead.
+    badge = OUT / "ar-cafe-logo.png"
+    if badge.exists():
+        try:
+            from PIL import Image, ImageDraw, ImageFilter
+
+            card = Image.new("RGBA", (1200, 630), (9, 9, 9, 255))
+            glow = Image.new("L", (1200, 630), 0)
+            ImageDraw.Draw(glow).ellipse((300, -40, 900, 560), fill=90)
+            glow = glow.filter(ImageFilter.GaussianBlur(90))
+            card.paste(Image.new("RGBA", (1200, 630), (214, 180, 119, 255)), (0, 0), glow)
+            ImageDraw.Draw(card).rectangle((28, 28, 1171, 601), outline=(128, 99, 61, 255), width=1)
+            logo = Image.open(badge).convert("RGBA").resize((500, 500), Image.LANCZOS)
+            card.alpha_composite(logo, (350, 65))
+            card.convert("RGB").save(ROOT / "public" / "og.png", optimize=True)
+        except ImportError:
+            print("Pillow not installed: og.png keeps the vector logo (pip install pillow)")
+    print("wrote", ", ".join(files), "+ og-image.svg, og.png, ar-monogram-icon.svg")
 
 
 if __name__ == "__main__":
