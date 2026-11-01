@@ -33,21 +33,33 @@ export default function Scroll3D({ intro, steps, currency, orderable }: { intro:
     // first fifth of the slice and slides out upwards during the last fifth, so the words
     // move with your finger instead of switching.
     const clamp = (v: number) => Math.min(1, Math.max(0, v));
+    // The text scrolls normally; only the 3D stage stays in place. Where the reading line
+    // (the middle of the free screen) sits between two panels sets how far the 3D story has moved.
     const updatePanels = () => {
-      // f runs from 0 (intro centred) to stepCount - 1 (last panel centred).
-      const f = progress * (stepCount - 1);
+      const vh = window.innerHeight;
+      const phone = window.innerWidth < 960;
+      const top = phone ? 72 + box.offsetHeight : 72;
+      const line = top + (vh - top) * 0.5;
+      const centres = panels.map((p) => {
+        const r = p.getBoundingClientRect();
+        return r.top + r.height / 2;
+      });
+      let f = 0;
+      if (line >= centres[stepCount - 1]) f = stepCount - 1;
+      else if (line > centres[0]) {
+        for (let i = 0; i < stepCount - 1; i++) {
+          if (line >= centres[i] && line < centres[i + 1]) {
+            f = i + (line - centres[i]) / Math.max(1, centres[i + 1] - centres[i]);
+            break;
+          }
+        }
+      }
+      progress = f / Math.max(1, stepCount - 1);
       panels.forEach((panel, i) => {
-        const d = f - i;
-        // the intro starts moving with the very first scroll; later panels hold briefly when centred
-        const enter = i === 0 ? 0 : clamp((-d - 0.12) / 0.38);
-        const leave = i === stepCount - 1 ? 0 : i === 0 ? clamp(d / 0.45) : clamp((d - 0.12) / 0.38);
-        const opacity = (1 - enter) * (1 - leave);
-        panel.style.opacity = opacity.toFixed(3);
-        panel.style.transform = `translate3d(0, ${(enter * 64 - leave * 64).toFixed(1)}px, 0)`;
-        panel.style.setProperty("--enter", enter.toFixed(3));
-        panel.style.visibility = opacity < 0.01 ? "hidden" : "visible";
-        if (opacity > 0.5) panel.removeAttribute("inert");
-        else panel.setAttribute("inert", "");
+        const dist = (centres[i] - line) / (vh - top);
+        const fade = clamp((Math.abs(dist) - 0.18) / 0.4);
+        panel.style.opacity = (1 - fade * 0.65).toFixed(3);
+        panel.style.setProperty("--enter", clamp(dist / 0.45).toFixed(3));
       });
       sec.dataset.active = String(Math.round(f));
     };
@@ -57,16 +69,13 @@ export default function Scroll3D({ intro, steps, currency, orderable }: { intro:
       ticking = true;
       requestAnimationFrame(() => {
         ticking = false;
-        const r = sec.getBoundingClientRect();
-        const run = Math.max(1, r.height - window.innerHeight);
-        progress = clamp(-r.top / run);
         updatePanels();
       });
     };
     if (!reduced) {
-      sec.style.height = `calc(100dvh + ${(stepCount - 1) * 80}dvh)`;
       readScroll();
       window.addEventListener("scroll", readScroll, { passive: true });
+      window.addEventListener("resize", readScroll);
     }
 
     let disposed = false;
@@ -250,6 +259,7 @@ export default function Scroll3D({ intro, steps, currency, orderable }: { intro:
     return () => {
       disposed = true;
       window.removeEventListener("scroll", readScroll);
+      window.removeEventListener("resize", readScroll);
       cleanup3d();
     };
   }, []);

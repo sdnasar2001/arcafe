@@ -263,32 +263,41 @@ body {
 .scrolly__stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .scrolly--no3d .scrolly__stage { display: none; }
 
-/* With scripting and motion: pin the stage and swap the panels as you scroll */
-.scrolly--on { height: 340dvh; }
-.scrolly--on .scrolly__pin { position: sticky; top: 72px; height: calc(100dvh - 72px); min-height: 0; padding-block: 0; }
+/* With scripting and motion: the text scrolls normally past a 3D stage that stays in view */
+.scrolly--on .scrolly__pin { align-items: start; padding-block: 0; min-height: 0; }
 .scrolly--on .scrolly__text { gap: 0; }
 .scrolly--on .scrolly__panel {
-  grid-area: 1 / 1;
-  align-self: center;
-  will-change: transform, opacity;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 78dvh;
+  padding-block: var(--space-2xl);
+  transition: opacity var(--dur-short) var(--ease-out);
 }
-/* the price rows trail the heading a little as a panel slides in */
+.scrolly--on .scrolly__panel[data-step="0"] { min-height: calc(100dvh - 72px); padding-block: var(--space-xl); }
+.scrolly--on .scrolly__stage { position: sticky; top: 72px; height: calc(100dvh - 72px); }
+/* the price rows trail the heading a little as a panel scrolls in */
 .scrolly--on .scrolly__items li,
 .scrolly--on .scrolly__panel .btn {
-  transform: translate3d(0, calc(var(--enter, 0) * (24px + var(--i, 4) * 14px)), 0);
-  opacity: calc(1 - var(--enter, 0) * 0.6);
+  transform: translate3d(0, calc(var(--enter, 0) * (16px + var(--i, 4) * 10px)), 0);
 }
 
 @media (max-width: 60rem) {
   .scrolly__pin { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
   .scrolly__stage { order: -1; height: 46vh; }
-  .scrolly--on .scrolly__pin { grid-template-rows: 40% minmax(0, 1fr); align-items: start; padding-block: var(--space-sm) var(--space-lg); }
-  .scrolly--on .scrolly__stage { height: 100%; }
-  .scrolly--on .scrolly__panel { align-self: start; }
+  .scrolly--on .scrolly__pin { gap: 0; }
+  .scrolly--on .scrolly__stage {
+    height: 34dvh;
+    z-index: var(--z-sticky);
+    margin-inline: calc(var(--gutter) * -1);
+    background: linear-gradient(180deg, var(--color-paper-2) 0%, var(--color-paper-2) 82%, transparent 100%);
+  }
+  .scrolly--on .scrolly__panel { min-height: 56dvh; padding-block: var(--space-xl); justify-content: flex-start; }
+  .scrolly--on .scrolly__panel[data-step="0"] { min-height: 0; padding-block: var(--space-lg) var(--space-2xl); }
   .scrolly .hero h1 { font-size: clamp(2.25rem, 9vw, 2.75rem); }
   .scrolly__panel h2 { font-size: clamp(1.75rem, 7vw, 2.25rem); }
   .scrolly__items { margin-block: var(--space-md) var(--space-lg); }
-  .scrolly__items li { padding-block: var(--space-xs); font-size: var(--text-md); }
+  .scrolly__items li { font-size: var(--text-md); }
   .scrolly .hero__actions { margin-top: var(--space-lg); }
 }
 @media (prefers-reduced-motion: reduce) {
