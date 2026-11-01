@@ -63,6 +63,15 @@ function change(name: string, price: number | null, delta: number) {
   }
 }
 let flashTimer: ReturnType<typeof setTimeout> | undefined;
+
+// Used by the dish card: add several of one item at once.
+export function addToOrder(name: string, price: string, qty: number) {
+  if (qty > 0) change(name, toPrice(price), qty);
+}
+export function useQtyInOrder(name: string) {
+  const { lines } = useOrder();
+  return lines.find((l) => l.name === name)?.qty ?? 0;
+}
 const setDetails = (d: Partial<Details>) => set({ details: { ...state.details, ...d } });
 
 function toPrice(p: string) {

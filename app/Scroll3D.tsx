@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { AddToOrder } from "./Order";
+import { DishButton, type Dish } from "./Dish";
 
 // A scroll story: the AR Cafe logo in 3D (a golden coffee bean inside three orbit rings).
 // The section is pinned while you scroll through four panels: the intro, then one panel
 // per menu group. Each orbit ring stands for one group and lights up when its panel shows.
 // Without JavaScript, or with reduced motion, the panels simply sit one under another.
 
-export type Step = { title: string; note: string; items: { name: string; price: string; image?: string }[]; href: string };
+export type Step = { title: string; note: string; items: Dish[]; href: string };
 
 const RING_COLOURS = [0xc2410c, 0x0f766e, 0x9d174d]; // tea, tiffin, bakery (the logo's orbits)
 
@@ -279,12 +280,16 @@ export default function Scroll3D({ intro, steps, currency, orderable }: { intro:
                 {st.items.map((it, n) => (
                   <li key={it.name} style={{ "--i": n } as CSSProperties}>
                     {it.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img className="scrolly__thumb" src={it.image} alt="" width={56} height={56} loading="lazy" />
+                      <DishButton dish={it} className="dish-btn--photo">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img className="scrolly__thumb" src={it.image} alt="" width={56} height={56} loading="lazy" />
+                      </DishButton>
                     ) : (
                       <span className="scrolly__thumb scrolly__thumb--none" aria-hidden="true" />
                     )}
-                    <span className="scrolly__name">{it.name}</span>
+                    <DishButton dish={it} className="scrolly__name">
+                      {it.name}
+                    </DishButton>
                     {it.price && (
                       <span className="scrolly__price">
                         {currency} {it.price}

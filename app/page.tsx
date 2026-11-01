@@ -3,6 +3,7 @@ import rawSite from "../content/site.json";
 import MenuNav from "./MenuNav";
 import OpenStatus from "./OpenStatus";
 import Scroll3D from "./Scroll3D";
+import { DishButton, DishCard } from "./Dish";
 import { AddToOrder, OrderBar, OrderButton, OrderPanel } from "./Order";
 import { parseHours, hhmm } from "./hours";
 
@@ -61,6 +62,14 @@ export default function Home() {
     "https://www.google.com/maps/search/?api=1&query=" +
     encodeURIComponent(CAFE.name + " " + CAFE.address);
   const sections = site.menu.filter((s) => s.items.length > 0);
+  const dishOf = (it: Item, group: string) => ({
+    name: it.name,
+    description: it.description,
+    price: it.price,
+    image: it.image ? img(it.image) : "",
+    group,
+    available: it.available,
+  });
   const waHello = "https://wa.me/" + CAFE.phone + "?text=" + encodeURIComponent(`Hello ${CAFE.name}! I'd like to order:\n`);
   const special = (CAFE.special || "").trim();
 
@@ -81,7 +90,7 @@ export default function Home() {
       title: sections[i].title,
       note: sections[i].note,
       href: "#cat-" + i,
-      items: sections[i].items.filter((it) => it.available).slice(0, 4).map((it) => ({ name: it.name, price: it.price, image: it.image ? img(it.image) : "" })),
+      items: sections[i].items.filter((it) => it.available).slice(0, 4).map((it) => dishOf(it, sections[i].title)),
     }));
 
   const hrs = parseHours(CAFE.hours);
@@ -205,11 +214,15 @@ export default function Home() {
                     {section.items.map((item, ii) => (
                       <li key={ii} className={"item" + (item.image ? "" : " item--noimg") + (item.available ? "" : " item--off")}>
                         {item.image && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={img(item.image)} alt="" loading="lazy" width={72} height={72} className="item__img" />
+                          <DishButton dish={dishOf(item, section.title)} className="dish-btn--photo">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={img(item.image)} alt="" loading="lazy" width={72} height={72} className="item__img" />
+                          </DishButton>
                         )}
                         <div>
-                          <p className="item__name">{item.name}</p>
+                          <p className="item__name">
+                            <DishButton dish={dishOf(item, section.title)}>{item.name}</DishButton>
+                          </p>
                           {item.description && <p className="item__desc">{item.description}</p>}
                           {!item.available && <p className="item__off">Not available today</p>}
                           {item.available && hasPhone && <AddToOrder name={item.name} price={item.price} />}
@@ -331,6 +344,7 @@ export default function Home() {
       </footer>
       <div className="orderbar-space" aria-hidden="true" />
       <OrderBar phone={hasPhone ? CAFE.phone : ""} currency={CAFE.currency} cafe={CAFE.name} />
+      <DishCard currency={CAFE.currency} orderable={hasPhone} />
       <script dangerouslySetInnerHTML={{ __html: SLOT_SCRIPT }} />
     </main>
   );
